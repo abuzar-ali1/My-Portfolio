@@ -1,26 +1,41 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* In your global.css file */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+    to bottom right,
+    #09090b, /* zinc-950 */
+    #18181b  /* zinc-900 */
+  );
+  color: #a1a1aa; /* zinc-400 as default text color */
+  min-height: 100vh;
+  background-attachment: fixed; /* Keeps gradient stable during scroll */
+}
+
+/* Optional: Improve text readability for all elements */
+h1, h2, h3, h4, h5, h6 {
+  color: #f4f4f5; /* zinc-100 */
+}
+
+p {
+  color: #d4d4d8; /* zinc-300 */
+}
+
+/* Optional: Custom scrollbar to match theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #18181b; /* zinc-900 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f3f46; /* zinc-700 */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b; /* zinc-600 */
 }
