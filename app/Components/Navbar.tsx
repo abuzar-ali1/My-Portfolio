@@ -8,11 +8,12 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
+  { name: "About", href: "#about" },
   { name: "Projects", href: "#projects" },
   { name: "Skills", href: "#skills" },
-  { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
   { name: "Certification", href: "#certification" },
+  { name: "Achievements", href: "#achievements" },
   { name: "Education", href: "#education" },
 
 ];
@@ -100,7 +101,7 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onMouseEnter={() => setActiveLink(link.href)}
-                onMouseLeave={() => setActiveLink("#projects")}
+                onMouseLeave={() => setActiveLink("#about")}
                 className={cn(
                   "relative px-4 py-2 text-sm font-medium transition-colors rounded-full",
                   activeLink === link.href
