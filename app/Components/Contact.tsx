@@ -45,21 +45,21 @@ export default function Contact() {
     {
       icon: Mail,
       title: "Email",
-      value: "hello@abuzar.dev",
-      link: "mailto:hello@abuzar.dev",
+      value: "abuzarali.dev@gmail.com",
+      link: "mailto:abuzarali.dev@gmail.com",
       color: "text-blue-400"
     },
     {
       icon: Phone,
       title: "Phone",
-      value: "+1 (234) 567-8900",
-      link: "tel:+12345678900",
+      value: "+923372595592",
+      link: "tel:+923372595592",
       color: "text-green-400"
     },
     {
       icon: MapPin,
       title: "Location",
-      value: "San Francisco, CA",
+      value: "Lahore, Punjab",
       link: "#",
       color: "text-red-400"
     },
@@ -73,9 +73,9 @@ export default function Contact() {
   ];
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub", color: "hover:text-zinc-100" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn", color: "hover:text-blue-400" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter", color: "hover:text-sky-400" },
+    { icon: Github, href: "https://github.com/abuzar-ali1", label: "GitHub", color: "hover:text-zinc-100" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/abuzar-ali01/", label: "LinkedIn", color: "hover:text-blue-400" },
+    { icon: Twitter, href: "https://x.com/Abu_zar_Ali", label: "Twitter", color: "hover:text-sky-400" },
     { icon: MessageSquare, href: "#", label: "WhatsApp", color: "hover:text-green-400" }
   ];
 
@@ -341,7 +341,7 @@ export default function Contact() {
               <h3 className="text-lg font-bold text-zinc-100">Available for Work</h3>
             </div>
             <p className="text-zinc-400 text-sm mb-6">
-              I&apos;m currently accepting new projects for Q1 2024. Let&apos;s schedule a call to discuss your requirements.
+              I&apos;m currently accepting new projects. Let&apos;s schedule a call to discuss your requirements.
             </p>
             <a
               href="#"
@@ -364,7 +364,7 @@ export default function Contact() {
         <p className="text-sm text-zinc-500">
           Prefer email? Reach out directly at{" "}
           <a href="mailto:hello@abuzar.dev" className="text-zinc-300 hover:text-zinc-200 underline underline-offset-4">
-            hello@abuzar.dev
+            abuzarali.dev@gmail.com
           </a>
         </p>
       </motion.div>

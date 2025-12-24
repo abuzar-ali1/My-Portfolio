@@ -188,7 +188,7 @@ export default function Skills() {
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/30">
                 <span className="text-sm text-zinc-400">Years of Experience</span>
-                <span className="text-2xl font-bold text-zinc-100">3+</span>
+                <span className="text-2xl font-bold text-zinc-100">2+</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/30">
                 <span className="text-sm text-zinc-400">Projects Completed</span>
@@ -231,7 +231,7 @@ export default function Skills() {
             {[
               "REST APIs", "GraphQL", "State Management", "Testing", 
               "CI/CD", "Web Performance", "Accessibility", "PWA",
-              "SEO Optimization", "Cross-browser", "Version Control"
+              "SEO Optimization", "Cross-browser", "Version Control" , "Postman"
             ].map((skill) => (
               <span
                 key={skill}

@@ -1,4 +1,3 @@
-// src/components/Achievements.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -6,9 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Trophy, Award, Star, Chrome, ExternalLink,
   Calendar, MapPin, ChevronLeft, ChevronRight,
-  X, ZoomIn, Sparkles, Target
+  X, ZoomIn, Target
 } from "lucide-react";
 import Image from "next/image";
+import cert from "./../../public/Images/cert.jpeg";
+import award from "./../../public/Images/award.jpeg";
+import chromebook from "./../../public/Images/chromebook.jpeg";
+
+
+
 
 const achievements = [
   {
@@ -23,9 +28,9 @@ const achievements = [
     color: "from-blue-500/10 to-green-500/10",
     highlight: "Top Performer in Class",
     images: [
-      { id: "cert", alt: "Achievement Certificate", caption: "Certificate of Excellence" },
-      { id: "chromebook", alt: "Google Chromebook 11", caption: "Awarded Chromebook" },
-      { id: "award", alt: "Award Ceremony with CM Sindh", caption: "Award Ceremony" }
+      { id: "cert", alt: "Achievement Certificate", caption: "Certificate of Excellence" , src : cert },
+      { id: "chromebook", alt: "Google Chromebook 11", caption: "Awarded Chromebook", src : chromebook},
+      { id: "award", alt: "Award Ceremony with CM Sindh", caption: "Award Ceremony" , src: award }
     ]
   }
 ];
@@ -220,15 +225,14 @@ export default function Achievements() {
                         {/* Image Container */}
                         <div className="aspect-square rounded-xl overflow-hidden border-2 border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 transition-colors">
                           {/* Replace with actual images */}
-                          <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
-                            <div className="text-center">
-                              <div className="w-12 h-12 rounded-lg bg-zinc-700/50 border border-zinc-600/50 flex items-center justify-center mx-auto mb-3">
-                                <Sparkles className="w-6 h-6 text-zinc-400" />
-                              </div>
-                              <p className="text-sm font-medium text-zinc-300">{image.caption}</p>
-                              <p className="text-xs text-zinc-500 mt-2">Click to view</p>
-                            </div>
-                          </div>
+                          <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          />
+
                         </div>
 
                         {/* Zoom Icon */}
@@ -343,20 +347,15 @@ export default function Achievements() {
                 </div>
 
                 {/* Image Display */}
-                <div className="relative h-96 bg-gradient-to-br from-zinc-900 to-zinc-800 flex items-center justify-center">
+                <div className="relative h-150 bg-gradient-to-br from-zinc-900 to-zinc-800 flex items-center justify-center">
                   {/* Replace with actual Image component */}
-                  <div className="text-center p-8">
-                    <div className="w-32 h-32 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-700 border border-zinc-600/50 flex items-center justify-center mx-auto mb-6">
-                      <Trophy className="w-16 h-16 text-amber-400" />
-                    </div>
-                    <p className="text-xl font-bold text-zinc-100 mb-2">
-                      {achievements[0].images[currentImageIndex]?.caption}
-                    </p>
-                    <p className="text-zinc-400">
-                      Image preview - Replace with your actual photos
-                    </p>
-                  </div>
-
+                        <Image
+                        src={achievements[0].images[currentImageIndex]?.src}
+                        alt={`images`}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        />
                   {/* Navigation Arrows */}
                   <button
                     onClick={prevImage}
@@ -375,9 +374,9 @@ export default function Achievements() {
                 {/* Image Counter */}
                 <div className="p-4 border-t border-zinc-800">
                   <div className="flex items-center justify-center gap-2">
-                    {achievements[0].images.map((_, index) => (
+                    {achievements[0].images.map((Image, index) => (
                       <button
-                        key={index}
+                        key={Image.id}
                         onClick={() => setCurrentImageIndex(index)}
                         className={`w-2 h-2 rounded-full transition-all ${
                           index === currentImageIndex 
