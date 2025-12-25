@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("#about");
-  const [hoverLink, setHoverLink] = useState();
+  const [hoverLink, setHoverLink] = useState(activeLink);
   const observerRefs = useRef<Map<string, IntersectionObserver>>(new Map());
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
 
@@ -315,7 +315,7 @@ export default function Navbar() {
                 <div className="flex items-center justify-center gap-4 pt-6 mt-6 border-t border-zinc-800">
                   <motion.a
                     whileHover={{ scale: 1.1 }}
-                    href="https://github.com"
+                    href="https://github.com/abuzar-ali1"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
@@ -324,10 +324,10 @@ export default function Navbar() {
                   </motion.a>
                   <motion.a
                     whileHover={{ scale: 1.1 }}
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/in/abuzar-ali01/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
+                    className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-blue-600"
                   >
                     <Linkedin className="w-5 h-5" />
                   </motion.a>

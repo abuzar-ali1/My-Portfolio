@@ -310,7 +310,7 @@ export const achievements = [
     images: [
       { id: "cert", alt: "Achievement Certificate", caption: "Certificate of Excellence" , src : cert },
       { id: "chromebook", alt: "Google Chromebook 11", caption: "Awarded Chromebook", src : chromebook},
-      { id: "award", alt: "Award Ceremony with CM Sindh", caption: "Award Ceremony" , src: award }
+      { id: "award", alt: "Award Ceremony with CM Sindh", caption: "Award Ceremony" , src: award },
       { id: "me", alt: "Feeling so Happy", caption: "Hello Guys!" , src: myPic }
 
     ]
