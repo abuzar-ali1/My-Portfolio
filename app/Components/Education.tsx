@@ -21,18 +21,25 @@ export default function Education() {
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100, damping: 15 }
-    },
-    hover: {
-      y: -5,
-      transition: { type: "spring", stiffness: 400 }
+ const itemVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: { 
+    y: 0, 
+    opacity: 1,
+    transition: { 
+      type: "spring" as const, 
+      stiffness: 100, 
+      damping: 15 
     }
-  };
+  },
+  hover: {
+    y: -5,
+    transition: {
+      type: "spring" as const,
+      stiffness: 400
+    }
+  }
+};
 
   const progressBarVariants = {
     hidden: { width: 0 },

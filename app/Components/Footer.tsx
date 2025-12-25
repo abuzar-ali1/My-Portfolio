@@ -74,14 +74,14 @@ export default function Footer() {
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100, damping: 15 }
-    }
-  };
+ const itemVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: { 
+    y: 0, 
+    opacity: 1,
+    transition: { type: "spring" as const, stiffness: 100, damping: 15 }
+  }
+};
 
   return (
     <footer className="relative border-t border-zinc-800 bg-gradient-to-b from-zinc-900 to-black">
@@ -198,7 +198,7 @@ export default function Footer() {
             <span className="text-sm text-zinc-500">Follow my journey:</span>
             <div className="flex items-center gap-2">
               <motion.a
-                href="https://github.com"
+                href="https://github.com/abuzar-ali1"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -2, scale: 1.1 }}
@@ -209,7 +209,7 @@ export default function Footer() {
                 <Github className="w-4 h-4" />
               </motion.a>
               <motion.a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/abuzar-ali01/"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -2, scale: 1.1 }}
@@ -220,7 +220,7 @@ export default function Footer() {
                 <Linkedin className="w-4 h-4" />
               </motion.a>
               <motion.a
-                href="https://twitter.com"
+                href="https://x.com/Abu_zar_Ali"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -2, scale: 1.1 }}
