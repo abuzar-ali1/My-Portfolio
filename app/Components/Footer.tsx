@@ -1,4 +1,3 @@
-// src/components/Footer.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -25,9 +24,9 @@ const footerLinks = [
   {
     title: "Resources",
     links: [
-      { name: "GitHub", href: "https://github.com", icon: Github },
-      { name: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
-      { name: "Twitter", href: "https://twitter.com", icon: Twitter },
+      { name: "GitHub", href: "https://github.com/abuzar-ali1", icon: Github },
+      { name: "LinkedIn", href: "https://www.linkedin.com/in/abuzar-ali01", icon: Linkedin },
+      { name: "Twitter", href: "https://x.com/Abu_zar_Ali", icon: Twitter },
       { name: "Blog", href: "#", icon: ExternalLink },
     ]
   },
@@ -51,7 +50,8 @@ export default function Footer() {
   const [currentYear, setCurrentYear] = useState<number>(2024);
   const [scrollTop, setScrollTop] = useState<number>(0);
 
-  useEffect(() => {
+ useEffect(() => {
+    // This is now accessing the state setter correctly
     setCurrentYear(new Date().getFullYear());
     
     const handleScroll = () => {
@@ -153,7 +153,7 @@ export default function Footer() {
                       href={link.href}
                       className="group flex items-center gap-2 text-zinc-400 hover:text-zinc-300 text-sm transition-colors"
                     >
-                      {link.icon && <link.icon className="w-4 h-4" />}
+                      {'icon' in link && link.icon ? <link.icon className="w-4 h-4" /> : null}
                       <span>{link.name}</span>
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                         <ExternalLink className="w-3 h-3" />
