@@ -1,14 +1,13 @@
-// src/components/Contact.tsx
 "use client";
 
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { 
-  Mail, Phone, MapPin, Send, 
-  CheckCircle, Loader2, Github, 
-  Linkedin, Twitter, MessageSquare,
+  Mail, Send, 
+  CheckCircle, Loader2,
   Calendar, Clock, Sparkles
 } from "lucide-react";
+import { contactInfo, socialLinks } from "../Data/data";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -41,43 +40,6 @@ export default function Contact() {
     });
   };
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email",
-      value: "abuzarali.dev@gmail.com",
-      link: "mailto:abuzarali.dev@gmail.com",
-      color: "text-blue-400"
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      value: "+923372595592",
-      link: "tel:+923372595592",
-      color: "text-green-400"
-    },
-    {
-      icon: MapPin,
-      title: "Location",
-      value: "Lahore, Punjab",
-      link: "#",
-      color: "text-red-400"
-    },
-    {
-      icon: Calendar,
-      title: "Availability",
-      value: "Open to opportunities",
-      link: "#",
-      color: "text-purple-400"
-    }
-  ];
-
-  const socialLinks = [
-    { icon: Github, href: "https://github.com/abuzar-ali1", label: "GitHub", color: "hover:text-zinc-100" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/abuzar-ali01/", label: "LinkedIn", color: "hover:text-blue-400" },
-    { icon: Twitter, href: "https://x.com/Abu_zar_Ali", label: "Twitter", color: "hover:text-sky-400" },
-    { icon: MessageSquare, href: "#", label: "WhatsApp", color: "hover:text-green-400" }
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },

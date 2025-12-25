@@ -1,32 +1,22 @@
-// src/components/AboutHero.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Code, Palette, Cpu, Database,
-  Github, Linkedin, Twitter, Mail,
-  ChevronDown, Zap, Sparkles, ArrowRight,
-  Target, Rocket, Coffee, Heart
-} from "lucide-react";
+  Code, ChevronDown, Sparkles, Coffee, } from "lucide-react";
 import Image from "next/image";
 import profilePic from "./../../public/Images/my_profile.png";
+import { AboutSocialLinks, AboutStats, roles } from "../Data/data";
 
 export default function AboutHero() {
   const [textIndex, setTextIndex] = useState(0);
   const [revealedLetters, setRevealedLetters] = useState(0);
   const [activeStat, setActiveStat] = useState(0);
 
-  const roles = [
-    { title: "Frontend Developer", icon: Code, color: "text-blue-400" },
-    { title: "UI/UX Designer", icon: Palette, color: "text-purple-400" },
-    { title: "React Specialist", icon: Cpu, color: "text-cyan-400" },
-    { title: "Full Stack Enthusiast", icon: Database, color: "text-emerald-400" },
-  ];
 
   const name = "Abuzar Ali";
 
-  // Typewriter name animation
+  //  name animation
   useEffect(() => {
     if (revealedLetters < name.length) {
       const timer = setTimeout(() => {
@@ -57,19 +47,6 @@ export default function AboutHero() {
     return () => clearInterval(interval);
   }, []);
 
-  const stats = [
-    { value: "15+", label: "Projects", icon: Target, color: "bg-blue-500/10" },
-    { value: "3+", label: "Years", icon: Zap, color: "bg-purple-500/10" },
-    { value: "100%", label: "Satisfaction", icon: Heart, color: "bg-pink-500/10" },
-    { value: "∞", label: "Passion", icon: Rocket, color: "bg-amber-500/10" },
-  ];
-
-  const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub", color: "hover:bg-zinc-800" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn", color: "hover:bg-blue-500/20" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter", color: "hover:bg-sky-500/20" },
-    { icon: Mail, href: "mailto:hello@abuzar.dev", label: "Email", color: "hover:bg-red-500/20" },
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -89,7 +66,7 @@ export default function AboutHero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-20">
+    <section id="about"  className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-20">
       {/* Animated background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 left-10 w-96 h-96 rounded-full bg-gradient-to-r from-zinc-800/10 to-zinc-900/10 blur-3xl" />
@@ -243,7 +220,7 @@ export default function AboutHero() {
                 variants={itemVariants}
                 className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
               >
-                {stats.map((stat, index) => (
+                {AboutStats.map((stat, index) => (
                   <motion.div
                     key={stat.label}
                     whileHover={{ y: -5 }}
@@ -271,7 +248,7 @@ export default function AboutHero() {
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-zinc-500">Connect</span>
                   <div className="flex items-center gap-2">
-                    {socialLinks.map((social, index) => (
+                    {AboutSocialLinks.map((social, index) => (
                       <motion.a
                         key={social.label}
                         href={social.href}

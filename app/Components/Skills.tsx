@@ -2,54 +2,8 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  Code, Palette, Cpu, Database, 
-  GitBranch, Smartphone, Globe, Zap,
-  CheckCircle, ArrowRight, Sparkles
-} from "lucide-react";
-
-const skillCategories = [
-  {
-    title: "Frontend",
-    icon: Code,
-    skills: [
-      { name: "React", level: 95, color: "from-blue-400/20 to-cyan-400/20" },
-      { name: "TypeScript", level: 90, color: "from-blue-500/20 to-indigo-500/20" },
-      { name: "Next.js", level: 88, color: "from-zinc-400/20 to-zinc-500/20" },
-      { name: "Tailwind CSS", level: 96, color: "from-teal-400/20 to-cyan-400/20" },
-    ]
-  },
-  {
-    title: "UI/UX Design",
-    icon: Palette,
-    skills: [
-      { name: "Figma", level: 85, color: "from-pink-500/20 to-purple-500/20" },
-      { name: "Framer Motion", level: 92, color: "from-red-500/20 to-pink-500/20" },
-      { name: "Responsive Design", level: 94, color: "from-green-500/20 to-emerald-500/20" },
-      { name: "Design Systems", level: 82, color: "from-yellow-500/20 to-orange-500/20" },
-    ]
-  },
-  {
-    title: "Tools & Others",
-    icon: GitBranch,
-    skills: [
-      { name: "Git/GitHub", level: 90, color: "from-zinc-400/20 to-zinc-600/20" },
-      { name: "VS Code", level: 96, color: "from-blue-400/20 to-blue-600/20" },
-      { name: "Performance", level: 87, color: "from-purple-500/20 to-violet-500/20" },
-      { name: "Web Vitals", level: 89, color: "from-green-400/20 to-lime-400/20" },
-    ]
-  }
-];
-
-const techStack = [
-  { name: "JavaScript", icon: Code, color: "text-yellow-400" },
-  { name: "TypeScript", icon: Cpu, color: "text-blue-400" },
-  { name: "React", icon: Zap, color: "text-cyan-400" },
-  { name: "Next.js", icon: Globe, color: "text-zinc-100" },
-  { name: "Tailwind", icon: Palette, color: "text-teal-400" },
-  { name: "Node.js", icon: Database, color: "text-green-400" },
-  { name: "Framer Motion", icon: Smartphone, color: "text-pink-400" },
-];
+import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
+import { skillCategories, techStack } from "../Data/data";
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState(0);

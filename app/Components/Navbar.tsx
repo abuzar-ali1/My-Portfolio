@@ -1,29 +1,21 @@
-// src/components/Navbar.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Linkedin, Menu, X, ChevronRight, Sparkles } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { navLinks } from "../Data/data";
 
-const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
-  { name: "Skills", href: "#skills" },
-  { name: "Contact", href: "#contact" },
-  { name: "Certification", href: "#certification" },
-  { name: "Achievements", href: "#achievements" },
-  { name: "Education", href: "#education" },
-
-];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("#projects");
+  const [activeLink, setActiveLink] = useState("#about");
+  const [hoverLink, setHoverLink] = useState();
+  const observerRefs = useRef<Map<string, IntersectionObserver>>(new Map());
+  const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
 
-  // Handle scroll effect with Zinc/Slate colors
+  // Handle scroll effect for navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -31,6 +23,99 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Initialize active link from URL on component mount
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      setActiveLink(hash);
+    }
+  }, []);
+
+  // Set up Intersection Observer for each section
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '-100px 0px -50% 0px', // Adjust for navbar and center detection
+      threshold: 0.2,
+    };
+
+    // Create observer callback
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const hash = `#${id}`;
+          
+          // Update active link
+          setActiveLink(hash);
+          
+          // Update URL without triggering scroll
+          if (window.history.replaceState) {
+            window.history.replaceState(null, '', hash);
+          }
+        }
+      });
+    };
+
+    // Create and store observer
+    const observer = new IntersectionObserver(observerCallback, options);
+    
+    // Observe each section
+    navLinks.forEach((link) => {
+      const sectionId = link.href.replace('#', '');
+      const element = document.getElementById(sectionId);
+      if (element) {
+        sectionRefs.current.set(sectionId, element);
+        observer.observe(element);
+      }
+    });
+
+    // Cleanup
+    return () => {
+      observer.disconnect();
+      observerRefs.current.clear();
+      sectionRefs.current.clear();
+    };
+  }, []);
+
+  // Handle smooth scroll to section
+  const scrollToSection = (href: string) => {
+    const sectionId = href.replace('#', '');
+    const element = document.getElementById(sectionId);
+    
+    if (element) {
+      // Close mobile menu if open
+      setMobileMenuOpen(false);
+      
+      // Update active link immediately
+      setActiveLink(href);
+      
+      // Calculate scroll position with offset for navbar
+      const navbarHeight = 80; // Adjust based on your navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+      
+      // Smooth scroll
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      // Update URL hash
+      if (window.history.pushState) {
+        window.history.pushState(null, '', href);
+      } else {
+        window.location.hash = href;
+      }
+    }
+  };
+
+  // Handle scroll on link click
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    scrollToSection(href);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,12 +145,13 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
-          {/* Logo - Zinc/Slate theme */}
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             whileHover={{ scale: 1.02 }}
             className="group cursor-pointer"
+            onClick={() => scrollToSection('#about')}
           >
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -85,7 +171,7 @@ export default function Navbar() {
             </div>
           </motion.div>
 
-          {/* Desktop Navigation - Zinc floating pill */}
+          {/* Desktop Navigation */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -96,40 +182,44 @@ export default function Navbar() {
                 : "bg-zinc-900/30 backdrop-blur-sm border-zinc-600/30"
             )}
           >
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.name}
-                href={link.href}
-                onMouseEnter={() => setActiveLink(link.href)}
-                onMouseLeave={() => setActiveLink("#about")}
-                className={cn(
-                  "relative px-4 py-2 text-sm font-medium transition-colors rounded-full",
-                  activeLink === link.href
-                    ? "text-zinc-100 bg-zinc-800/50"
-                    : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/30"
-                )}
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {link.name}
-                {activeLink === link.href && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 rounded-full border border-zinc-600/50 -z-10"
-                  />
-                )}
-              </motion.a>
-            ))}
+            {navLinks.map((link) => { 
+              return (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  onMouseEnter={() => setHoverLink(link.href)}
+                  onMouseLeave={() => setHoverLink(activeLink)}
+                  onClick={(e) => handleLinkClick(e, link.href)}
+                  className={cn(
+                    "relative px-4 py-2 text-sm font-medium transition-colors rounded-full flex items-center gap-2",
+                    activeLink === link.href
+                      ? "text-zinc-100 bg-zinc-800/50"
+                      : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/30"
+                  )}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {link.name}
+                  {hoverLink === link.href && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 rounded-full border border-zinc-500/50 -z-10"
+                    />
+                  )}
+                </motion.a>
+              );
+            })}
           </motion.div>
 
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Social Icons */}
             <div className="flex items-center gap-2">
               <motion.a
                 whileHover={{ y: -2, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
               >
                 <Github className="w-5 h-5" />
@@ -138,14 +228,16 @@ export default function Navbar() {
                 whileHover={{ y: -2, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 href="https://linkedin.com"
-                className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-blue-400 transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
               </motion.a>
             </div>
 
-            {/* Hire Me Button - Slate accent */}
             <motion.button
+              onClick={() => scrollToSection('#contact')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-5 py-2.5 rounded-full bg-gradient-to-r from-slate-700 to-slate-800 text-zinc-100 font-semibold text-sm hover:from-slate-600 hover:to-slate-700 transition-all border border-slate-600/50 hover:border-slate-500/50 shadow-lg shadow-slate-900/30"
@@ -184,7 +276,7 @@ export default function Navbar() {
           </motion.button>
         </div>
 
-        {/* Mobile Menu - Zinc overlay */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -204,9 +296,14 @@ export default function Navbar() {
                     <motion.a
                       key={link.name}
                       href={link.href}
+                      onClick={(e) => handleLinkClick(e, link.href)}
                       variants={itemVariants}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center justify-between py-3 px-4 text-base font-medium rounded-lg text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800/50 transition-colors group"
+                      className={cn(
+                        "flex items-center justify-between py-3 px-4 text-base font-medium rounded-lg transition-colors group",
+                        activeLink === link.href
+                          ? "text-zinc-100 bg-zinc-800/50"
+                          : "text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800/50"
+                      )}
                     >
                       <span>{link.name}</span>
                       <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
@@ -219,6 +316,8 @@ export default function Navbar() {
                   <motion.a
                     whileHover={{ scale: 1.1 }}
                     href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
                   >
                     <Github className="w-5 h-5" />
@@ -226,11 +325,17 @@ export default function Navbar() {
                   <motion.a
                     whileHover={{ scale: 1.1 }}
                     href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
                   >
                     <Linkedin className="w-5 h-5" />
                   </motion.a>
                   <motion.button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      scrollToSection('#contact');
+                    }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-5 py-2.5 rounded-full bg-gradient-to-r from-slate-700 to-slate-800 text-zinc-100 font-semibold text-sm"
@@ -244,7 +349,7 @@ export default function Navbar() {
         </AnimatePresence>
       </div>
 
-      {/* Scroll Progress Indicator - Zinc gradient */}
+      {/* Scroll Progress Indicator */}
       <motion.div
         className="h-[1px] bg-gradient-to-r from-transparent via-zinc-600 to-transparent"
         initial={{ scaleX: 0 }}

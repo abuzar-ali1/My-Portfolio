@@ -3,58 +3,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Trophy, Award, Star, Chrome, ExternalLink,
+  Trophy, Award, Chrome, ExternalLink,
   Calendar, MapPin, ChevronLeft, ChevronRight,
-  X, ZoomIn, Target
+  X, ZoomIn, 
 } from "lucide-react";
 import Image from "next/image";
-import cert from "./../../public/Images/cert.jpeg";
-import award from "./../../public/Images/award.jpeg";
-import chromebook from "./../../public/Images/chromebook.jpeg";
+import { achievements, otherAchievements } from "../Data/data";
 
 
-
-
-const achievements = [
-  {
-    id: 1,
-    title: "Chief Minister's Excellence Award",
-    subtitle: "Outstanding Performance in Python Development",
-    award: "Google Chromebook 11",
-    date: "January 2025",
-    location: "Sukkur IBA University, Sindh",
-    description: "Awarded a Google Chromebook 11 by the Chief Minister of Sindh for demonstrating exceptional performance and outstanding achievements in the Python Development course. Recognized as the top performer among all students in the program.",
-    icon: Chrome,
-    color: "from-blue-500/10 to-green-500/10",
-    highlight: "Top Performer in Class",
-    images: [
-      { id: "cert", alt: "Achievement Certificate", caption: "Certificate of Excellence" , src : cert },
-      { id: "chromebook", alt: "Google Chromebook 11", caption: "Awarded Chromebook", src : chromebook},
-      { id: "award", alt: "Award Ceremony with CM Sindh", caption: "Award Ceremony" , src: award }
-    ]
-  }
-];
-
-const otherAchievements = [
-  {
-    title: "Top 120 Student Selection",
-    description: "Selected among top 120 students from 500+ applicants for xWave frontend development program",
-    icon: Star,
-    color: "text-amber-400"
-  },
-  {
-    title: "10+ Projects Completed",
-    description: "Built and deployed multiple real-world projects across various technologies",
-    icon: Target,
-    color: "text-emerald-400"
-  },
-  {
-    title: "Freelance Certification",
-    description: "Certified in professional freelancing and client management by Digi Skill",
-    icon: Award,
-    color: "text-purple-400"
-  }
-];
 
 export default function Achievements() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -126,7 +82,7 @@ export default function Achievements() {
         </p>
       </motion.div>
 
-      {/* Main Achievement Card */}
+      {/* Achievement Card */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -143,7 +99,7 @@ export default function Achievements() {
           >
             {/* Main Achievement Card */}
             <div className="p-8 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-zinc-700 transition-all">
-              {/* Header with Icon and Badge */}
+              {/* Header */}
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8">
                 <div className="flex items-center gap-4">
                   <div className={`p-4 rounded-xl bg-gradient-to-br ${achievement.color} border border-zinc-700/50`}>
@@ -201,7 +157,7 @@ export default function Achievements() {
                     </div>
                   </div>
 
-                  {/* Description */}
+                  {/* description */}
                   <div className="p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/50">
                     <h4 className="text-lg font-semibold text-zinc-100 mb-3">Achievement Details</h4>
                     <p className="text-zinc-400 leading-relaxed">
@@ -348,7 +304,6 @@ export default function Achievements() {
 
                 {/* Image Display */}
                 <div className="relative h-150 bg-gradient-to-br from-zinc-900 to-zinc-800 flex items-center justify-center">
-                  {/* Replace with actual Image component */}
                         <Image
                         src={achievements[0].images[currentImageIndex]?.src}
                         alt={`images`}

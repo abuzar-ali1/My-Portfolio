@@ -1,9 +1,8 @@
-// src/components/ProjectGrid.tsx
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Github, ExternalLink, ArrowRight, Eye } from "lucide-react";
-import { PROJECTS } from "../constants";
+import { Github,  ArrowRight, Eye } from "lucide-react";
+import { PROJECTS } from "../Data/data";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 
@@ -41,7 +40,6 @@ export default function ProjectGrid() {
 
   return (
     <section id="projects" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Section Header - Matching Navbar */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -81,10 +79,8 @@ export default function ProjectGrid() {
             onMouseLeave={() => setHoveredId(null)}
             className={`relative ${project.size}`}
           >
-            {/* Card with Zinc/Slate theme */}
             <Card className="group relative h-full overflow-hidden rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-zinc-900/30 backdrop-blur-sm hover:border-zinc-600 transition-all duration-300">
               
-              {/* Background Image with Overlay */}
               <div className="absolute inset-0">
                 <div 
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
@@ -126,7 +122,7 @@ export default function ProjectGrid() {
                   </div>
                 </div>
 
-                {/* Action Links - Matching Navbar */}
+                {/* Action links _ Matching navbar */}
                 <div className="flex items-center justify-between pt-6 border-t border-zinc-800 group-hover:border-zinc-700 transition-colors">
                   <div className="flex items-center gap-4">
                     <motion.a
@@ -190,15 +186,7 @@ export default function ProjectGrid() {
         transition={{ delay: 0.5 }}
         className="mt-20 text-center"
       >
-        <motion.a
-          href="#contact"
-          className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-zinc-800/30 to-zinc-800/10 border border-zinc-700/50 text-zinc-300 hover:text-zinc-100 text-sm font-medium hover:border-zinc-600 transition-all group/cta"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          <span>View All Projects</span>
-          <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/cta:opacity-100 group-hover/cta:translate-x-0 transition-all" />
-        </motion.a>
+       
         
         <p className="mt-6 text-zinc-500 text-sm">
           Need a custom solution?{" "}

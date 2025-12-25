@@ -1,88 +1,10 @@
-// src/components/Certifications.tsx
 "use client";
 
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Award, Calendar, CheckCircle, BookOpen,
-  Code, Database, TrendingUp, Globe,
-  ChevronRight, Sparkles, Zap, Terminal
-} from "lucide-react";
+import {   Award, Calendar,Globe, ChevronRight, Sparkles, Zap} from "lucide-react";
+import { certifications, stats } from "../Data/data";
 
-const certifications = [
-  {
-    id: 1,
-    title: "Front-end Web Development",
-    institution: "xWave",
-    period: "Jan 2024 - Jan 2025",
-    duration: "12 months",
-    icon: Code,
-    color: "from-blue-500/10 to-cyan-500/10",
-    skills: ["HTML5", "CSS3", "Bootstrap 5", "JavaScript", "React.js", "Next.js", "WordPress"],
-    description: "Selected as one of the top 120 students from over 500 applicants. Successfully developed 10+ projects, refining skills in modern frontend technologies to create responsive websites and landing pages. Also completed a 3-month online WordPress development course.",
-    highlights: [
-      "Selected among top 120/500+ applicants",
-      "Developed 10+ responsive projects",
-      "Additional WordPress specialization"
-    ]
-  },
-  {
-    id: 2,
-    title: "Data Science Certification",
-    institution: "Sukkur IBA University",
-    period: "Jan 2025 - March 2025",
-    duration: "2 months",
-    icon: Database,
-    color: "from-purple-500/10 to-violet-500/10",
-    skills: ["Python", "Machine Learning", "TensorFlow", "Scikit-learn", "Statistical Analysis", "Tableau", "Matplotlib", "Predictive Modeling"],
-    description: "Mastered core Data Science concepts including statistical analysis, machine learning algorithms (Decision Tree, Random Forest, SVM), and data visualization. Developed expertise in predictive modeling using Scikit-learn and TensorFlow.",
-    highlights: [
-      "Applied ML algorithms for dataset accuracy prediction",
-      "Real-world projects in clustering, regression, and time-series forecasting",
-      "Hands-on experience with TensorFlow and Scikit-learn"
-    ]
-  },
-  {
-    id: 3,
-    title: "Python Development Certification",
-    institution: "Sukkur IBA University",
-    period: "Nov 2024 - Jan 2025",
-    duration: "3 months",
-    icon: Terminal,
-    color: "from-amber-500/10 to-orange-500/10",
-    skills: ["Python", "OOP", "Flask", "REST APIs", "Pandas", "NumPy", "pytest", "Web Scraping", "OpenCV", "Automation"],
-    description: "Proficient in building scalable applications using core Python, OOP principles, and design patterns. Developed automation scripts, REST APIs (Flask), and data pipelines for efficient data processing. Expert in error handling, multithreading, and unit testing.",
-    highlights: [
-      "Built REST APIs with Flask framework",
-      "Developed data pipelines with Pandas & NumPy",
-      "Web scraping with BeautifulSoup & image processing with OpenCV",
-      "Clean, maintainable code adhering to PEP8 standards"
-    ]
-  },
-  {
-    id: 4,
-    title: "Freelancing & Client Management",
-    institution: "Digi Skill",
-    period: "Nov 2024 - Jan 2025",
-    duration: "3 months",
-    icon: TrendingUp,
-    color: "from-emerald-500/10 to-green-500/10",
-    skills: ["Client Communication", "Project Management", "Freelance Strategies", "Business Development", "Client Acquisition"],
-    description: "Completed a three-month Freelancing course focusing on effective client interaction, project management strategies, and business development for successful freelance career growth.",
-    highlights: [
-      "Enhanced client communication skills",
-      "Learned effective project management strategies",
-      "Developed business development techniques"
-    ]
-  }
-];
-
-const stats = [
-  { label: "Certifications", value: "4", icon: Award },
-  { label: "Total Duration", value: "20 months", icon: Calendar },
-  { label: "Technical Skills", value: "25+", icon: CheckCircle },
-  { label: "Projects Built", value: "10+", icon: BookOpen }
-];
 
 export default function Certifications() {
   const containerVariants = {
@@ -108,7 +30,7 @@ export default function Certifications() {
 
   return (
     <section id="certifications" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Section Header */}
+      {/*  Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -131,7 +53,7 @@ export default function Certifications() {
         </p>
       </motion.div>
 
-      {/* Stats Overview */}
+      {/* Stats  */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -166,7 +88,6 @@ export default function Certifications() {
         viewport={{ once: true }}
         className="relative"
       >
-        {/* Timeline line */}
         <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-zinc-800 via-zinc-700 to-zinc-800 -translate-x-1/2" />
 
         {certifications.map((cert, index) => (
@@ -184,13 +105,13 @@ export default function Certifications() {
               </div>
             </div>
 
-            {/* Certification Card */}
+            {/* Certi Card */}
             <motion.div
               variants={itemVariants}
               className="ml-10 lg:ml-0"
             >
               <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-zinc-700 transition-all group">
-                {/* Card Header */}
+                {/* card header */}
                 <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-start lg:items-center gap-4 mb-6`}>
                   <div className={`p-3 rounded-xl bg-gradient-to-br ${cert.color} border border-zinc-700/50`}>
                     <cert.icon className="w-6 h-6 text-zinc-300" />
@@ -218,12 +139,12 @@ export default function Certifications() {
                   </div>
                 </div>
 
-                {/* Description */}
+                {/* description */}
                 <p className="text-zinc-400 mb-6 leading-relaxed">
                   {cert.description}
                 </p>
 
-                {/* Highlights */}
+                {/* highlights */}
                 {cert.highlights && (
                   <div className="mb-6">
                     <h4 className="text-sm font-semibold text-zinc-300 mb-3">Key Highlights:</h4>
@@ -238,7 +159,7 @@ export default function Certifications() {
                   </div>
                 )}
 
-                {/* Skills */}
+                {/* skills */}
                 <div>
                   <h4 className="text-sm font-semibold text-zinc-300 mb-3">Skills Acquired:</h4>
                   <div className="flex flex-wrap gap-2">
@@ -263,7 +184,7 @@ export default function Certifications() {
         ))}
       </motion.div>
 
-      {/* Additional Training */}
+      {/* Additional Trainings */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -1,61 +1,14 @@
-// src/components/Education.tsx
 "use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  GraduationCap, Calendar, BookOpen, Clock,
-  ChevronRight, TrendingUp, Award, MapPin,
+  GraduationCap, Calendar, BookOpen,
+  ChevronRight, TrendingUp, Award, 
   CheckCircle, Target, Sparkles, ExternalLink
 } from "lucide-react";
+import { educationData, educationStats } from "../Data/data";
 
-const educationData = [
-  {
-    id: 1,
-    degree: "FSc (Pre-Engineering)",
-    institution: "Government Degree College",
-    location: "Karachi, Pakistan",
-    period: "2020 - 2022",
-    status: "Completed",
-    icon: GraduationCap,
-    color: "from-blue-500/10 to-cyan-500/10",
-    description: "Completed intermediate studies with focus on Mathematics, Physics, and Chemistry. Developed strong analytical and problem-solving skills essential for computer science.",
-    achievements: [
-      "Developed foundation in logical thinking and mathematical concepts",
-      "Participated in science exhibitions and technical projects",
-      "Maintained consistent academic performance"
-    ],
-    gpa: "A Grade",
-    progress: 100
-  },
-  {
-    id: 2,
-    degree: "BS Computer Science",
-    institution: "Allama Iqbal Open University",
-    location: "Islamabad, Pakistan",
-    period: "2024 - Present (2nd Semester)",
-    status: "In Progress",
-    icon: BookOpen,
-    color: "from-purple-500/10 to-pink-500/10",
-    description: "Currently pursuing Bachelor's degree in Computer Science. Gaining comprehensive knowledge in programming, algorithms, data structures, and software development methodologies.",
-    currentCourses: [
-      "Introduction to Programming",
-      "Discrete Mathematics",
-      "Computer Fundamentals",
-      "English Composition"
-    ],
-    gpa: "In Progress",
-    progress: 25, // 2nd semester out of 8 total
-    expected: "Expected 2028"
-  }
-];
-
-const educationStats = [
-  { label: "Current GPA", value: "3.8", icon: Award, color: "text-amber-400" },
-  { label: "Semesters", value: "2/8", icon: BookOpen, color: "text-blue-400" },
-  { label: "Years Completed", value: "1", icon: Clock, color: "text-emerald-400" },
-  { label: "Courses Taken", value: "8+", icon: CheckCircle, color: "text-purple-400" }
-];
 
 export default function Education() {
   const [activeId, setActiveId] = useState<number | null>(null);
@@ -200,10 +153,7 @@ export default function Education() {
                         <span className="text-sm font-medium text-zinc-300">{edu.institution}</span>
                       </div>
                       
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-zinc-500" />
-                        <span className="text-sm text-zinc-400">{edu.location}</span>
-                      </div>
+
                     </div>
 
                     {/* Period and GPA */}
