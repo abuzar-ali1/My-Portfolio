@@ -6,14 +6,14 @@ import { Github, Linkedin, Menu, X, ChevronRight, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { navLinks } from "../Data/data";
 
-
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("#about");
-  const [hoverLink, setHoverLink] = useState(activeLink);
-  const observerRefs = useRef<Map<string, IntersectionObserver>>(new Map());
-  const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const [hoverLink, setHoverLink] = useState("#about");
+  const navbarRef = useRef<HTMLElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const isClickingRef = useRef(false);
 
   // Handle scroll effect for navbar background
   useEffect(() => {
@@ -26,95 +26,146 @@ export default function Navbar() {
 
   // Initialize active link from URL on component mount
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      setActiveLink(hash);
-    }
+    const hash = window.location.hash || "#about";
+    setActiveLink(hash);
+    setHoverLink(hash);
   }, []);
 
-  // Set up Intersection Observer for each section
+  // Set up Intersection Observer for each section - IMPROVED VERSION
   useEffect(() => {
+    // Disconnect existing observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
     const options = {
       root: null,
-      rootMargin: '-100px 0px -50% 0px', // Adjust for navbar and center detection
-      threshold: 0.2,
+      rootMargin: '-100px 0px -200px 0px', // Tighter margin for better detection
+      threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
     };
 
     // Create observer callback
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      // Skip if we're clicking (programmatic scroll)
+      if (isClickingRef.current) return;
+      
+      let mostVisibleEntry: IntersectionObserverEntry | null = null;
+      let highestThreshold = 0;
+      
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          const hash = `#${id}`;
-          
-          // Update active link
+        if (entry.isIntersecting && entry.intersectionRatio > highestThreshold) {
+          highestThreshold = entry.intersectionRatio;
+          mostVisibleEntry = entry;
+        }
+      });
+
+      if (mostVisibleEntry && highestThreshold > 0.1) {
+        const id = mostVisibleEntry.target.id;
+        const hash = `#${id}`;
+        
+        // Update both active and hover states
+        if (hash !== activeLink) {
           setActiveLink(hash);
+          setHoverLink(hash);
           
           // Update URL without triggering scroll
           if (window.history.replaceState) {
             window.history.replaceState(null, '', hash);
           }
         }
-      });
+      }
     };
 
     // Create and store observer
-    const observer = new IntersectionObserver(observerCallback, options);
+    observerRef.current = new IntersectionObserver(observerCallback, options);
     
     // Observe each section
-    navLinks.forEach((link) => {
-      const sectionId = link.href.replace('#', '');
-      const element = document.getElementById(sectionId);
-      if (element) {
-        sectionRefs.current.set(sectionId, element);
-        observer.observe(element);
-      }
-    });
+    const observeSections = () => {
+      navLinks.forEach((link) => {
+        const sectionId = link.href.replace('#', '');
+        const element = document.getElementById(sectionId);
+        if (element && observerRef.current) {
+          observerRef.current.observe(element);
+        }
+      });
+    };
+
+    // Small delay to ensure sections are rendered
+    setTimeout(observeSections, 100);
 
     // Cleanup
     return () => {
-      observer.disconnect();
-      observerRefs.current.clear();
-      sectionRefs.current.clear();
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
   }, []);
 
-  // Handle smooth scroll to section
-  const scrollToSection = (href: string) => {
+  // Handle smooth scroll to section - FIXED FOR SINGLE CLICK
+  const scrollToSection = async (href: string) => {
     const sectionId = href.replace('#', '');
     const element = document.getElementById(sectionId);
     
     if (element) {
+      // Set clicking flag to prevent observer updates
+      isClickingRef.current = true;
+      
       // Close mobile menu if open
       setMobileMenuOpen(false);
       
-      // Update active link immediately
+      // Update active and hover links immediately
       setActiveLink(href);
+      setHoverLink(href);
       
-      // Calculate scroll position with offset for navbar
-      const navbarHeight = 80; // Adjust based on your navbar height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+      // Small delay to ensure mobile menu closes
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Calculate navbar height
+      let navbarHeight = 80; // Default desktop height
+      
+      if (navbarRef.current) {
+        const navRect = navbarRef.current.getBoundingClientRect();
+        navbarHeight = navRect.height;
+      }
+      
+      // Get element position
+      const elementTop = element.offsetTop;
+      const scrollPosition = elementTop - navbarHeight;
       
       // Smooth scroll
       window.scrollTo({
-        top: offsetPosition,
+        top: scrollPosition,
         behavior: 'smooth'
       });
       
-      // Update URL hash
+      // Update URL
       if (window.history.pushState) {
         window.history.pushState(null, '', href);
-      } else {
-        window.location.hash = href;
       }
+      
+      // Reset clicking flag after scroll completes
+      setTimeout(() => {
+        isClickingRef.current = false;
+      }, 1000);
     }
   };
 
-  // Handle scroll on link click
+  // Handle scroll on link click - DESKTOP
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     scrollToSection(href);
+  };
+
+  // Handle scroll on link click - MOBILE (SINGLE CLICK)
+  const handleMobileLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    scrollToSection(href);
+  };
+
+  // Handle mobile menu toggle
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   const containerVariants = {
@@ -132,6 +183,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
+      ref={navbarRef}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -217,7 +269,7 @@ export default function Navbar() {
               <motion.a
                 whileHover={{ y: -2, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                href="https://github.com"
+                href="https://github.com/abuzar-ali1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
@@ -227,7 +279,7 @@ export default function Navbar() {
               <motion.a
                 whileHover={{ y: -2, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/abuzar-ali01/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-blue-400 transition-colors"
@@ -250,7 +302,7 @@ export default function Navbar() {
           <motion.button
             whileTap={{ scale: 0.9 }}
             className="md:hidden p-2.5 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={handleMobileMenuToggle}
           >
             <AnimatePresence mode="wait">
               {mobileMenuOpen ? (
@@ -296,10 +348,10 @@ export default function Navbar() {
                     <motion.a
                       key={link.name}
                       href={link.href}
-                      onClick={(e) => handleLinkClick(e, link.href)}
+                      onClick={(e) => handleMobileLinkClick(e, link.href)}
                       variants={itemVariants}
                       className={cn(
-                        "flex items-center justify-between py-3 px-4 text-base font-medium rounded-lg transition-colors group",
+                        "flex items-center justify-between py-3 px-4 text-base font-medium rounded-lg transition-colors group cursor-pointer",
                         activeLink === link.href
                           ? "text-zinc-100 bg-zinc-800/50"
                           : "text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800/50"
@@ -332,10 +384,7 @@ export default function Navbar() {
                     <Linkedin className="w-5 h-5" />
                   </motion.a>
                   <motion.button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      scrollToSection('#contact');
-                    }}
+                    onClick={() => scrollToSection('#contact')}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-5 py-2.5 rounded-full bg-gradient-to-r from-slate-700 to-slate-800 text-zinc-100 font-semibold text-sm"
