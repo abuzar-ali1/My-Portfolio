@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, Linkedin, Menu, X, ChevronRight, Sparkles } from "lucide-react";
+import { Github, Linkedin, Menu, X, ChevronRight, Sparkles, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navLinks } from "../Data/data";
+
+
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,41 +46,33 @@ export default function Navbar() {
       threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
     };
 
-    // Create observer callback
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      // Skip if we're clicking (programmatic scroll)
-      if (isClickingRef.current) return;
-      
-      let mostVisibleEntry: IntersectionObserverEntry | null = null;
-      let highestThreshold = 0;
-      
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio > highestThreshold) {
-          highestThreshold = entry.intersectionRatio;
-          mostVisibleEntry = entry;
-        }
-      });
 
-      if (mostVisibleEntry && highestThreshold > 0.1) {
-        const id = mostVisibleEntry.target.id;
-        const hash = `#${id}`;
-        
-        // Update both active and hover states
-        if (hash !== activeLink) {
-          setActiveLink(hash);
-          setHoverLink(hash);
-          
-          // Update URL without triggering scroll
-          if (window.history.replaceState) {
-            window.history.replaceState(null, '', hash);
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      if (isClickingRef.current) return;
+
+      for (const entry of entries) {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+          const target = entry.target as HTMLElement;
+          const id = target.id;
+          const hash = `#${id}`;
+
+          if (hash !== activeLink) {
+            setActiveLink(hash);
+            setHoverLink(hash);
+
+            if (window.history.replaceState) {
+              window.history.replaceState(null, '', hash);
+            }
           }
+          break; 
         }
       }
     };
 
     // Create and store observer
     observerRef.current = new IntersectionObserver(observerCallback, options);
-    
+
     // Observe each section
     const observeSections = () => {
       navLinks.forEach((link) => {
@@ -105,44 +99,44 @@ export default function Navbar() {
   const scrollToSection = async (href: string) => {
     const sectionId = href.replace('#', '');
     const element = document.getElementById(sectionId);
-    
+
     if (element) {
       // Set clicking flag to prevent observer updates
       isClickingRef.current = true;
-      
+
       // Close mobile menu if open
       setMobileMenuOpen(false);
-      
+
       // Update active and hover links immediately
       setActiveLink(href);
       setHoverLink(href);
-      
+
       // Small delay to ensure mobile menu closes
       await new Promise(resolve => setTimeout(resolve, 100));
-      
+
       // Calculate navbar height
       let navbarHeight = 80; // Default desktop height
-      
+
       if (navbarRef.current) {
         const navRect = navbarRef.current.getBoundingClientRect();
         navbarHeight = navRect.height;
       }
-      
+
       // Get element position
       const elementTop = element.offsetTop;
       const scrollPosition = elementTop - navbarHeight;
-      
+
       // Smooth scroll
       window.scrollTo({
         top: scrollPosition,
         behavior: 'smooth'
       });
-      
+
       // Update URL
       if (window.history.pushState) {
         window.history.pushState(null, '', href);
       }
-      
+
       // Reset clicking flag after scroll completes
       setTimeout(() => {
         isClickingRef.current = false;
@@ -196,7 +190,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          
+
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -234,7 +228,7 @@ export default function Navbar() {
                 : "bg-zinc-900/30 backdrop-blur-sm border-zinc-600/30"
             )}
           >
-            {navLinks.map((link) => { 
+            {navLinks.map((link) => {
               return (
                 <motion.a
                   key={link.name}
