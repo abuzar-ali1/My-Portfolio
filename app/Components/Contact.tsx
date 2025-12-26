@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { 
-  Mail, Send, 
+import {
+   Send,
   CheckCircle, Loader2,
   Calendar, Clock, Sparkles
 } from "lucide-react";
 import { contactInfo, socialLinks } from "../Data/data";
+import emailjs from '@emailjs/browser'; 
 
 export default function Contact() {
+  const formRef = useRef<HTMLFormElement>(null); // form ref
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,20 +19,45 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null); // <-- New error state
 
+  //  Functional EmailJS Submit Handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null); // Clear previous errors
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    // Validate form data
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setSubmitError("Please fill in all fields.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Send email using EmailJS 
+      const result = await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        formRef.current!,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      );
+
+      console.log('Email sent successfully:', result.text);
+
+      // Success state
       setIsSubmitting(false);
       setIsSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
-      
+
       // Reset success message after 5 seconds
       setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1500);
+
+    } catch (error: any) {
+      console.error('Email sending failed:', error);
+      setSubmitError(`Failed to send message: ${error.text || 'Please try again later.'}`);
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -50,16 +77,16 @@ export default function Contact() {
   };
 
   const itemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { 
-    y: 0, 
-    opacity: 1,
-    transition: { 
-      type: "spring" as const, 
-      stiffness: 100 
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 100
+      }
     }
-  }
-};
+  };
 
   return (
     <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -76,11 +103,11 @@ export default function Contact() {
             Get In Touch
           </span>
         </div>
-        
+
         <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-4">
           Let&apos;s <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-300 to-zinc-400">Connect</span>
         </h2>
-        
+
         <p className="text-lg text-zinc-400 max-w-2xl">
           Have a project in mind? Let&apos;s discuss how we can work together to bring your ideas to life.
         </p>
@@ -116,7 +143,7 @@ export default function Contact() {
           </AnimatePresence>
 
           {/* Form Card */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="p-8 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm"
           >
@@ -130,7 +157,23 @@ export default function Contact() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Add error message display */}
+            <AnimatePresence>
+              {submitError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="mb-6 p-4 rounded-xl bg-gradient-to-r from-red-900/20 to-rose-900/10 border border-red-800/30"
+                >
+                  <p className="text-red-300 text-sm">{submitError}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Update form element with ref */}
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+              {/* Form fields remain exactly as you had them */}
               <div className="grid sm:grid-cols-2 gap-6">
                 {/* Name Field */}
                 <div className="space-y-2">
@@ -138,16 +181,13 @@ export default function Contact() {
                   <div className="relative">
                     <input
                       type="text"
-                      name="name"
+                      name="name" // This must match your EmailJS template parameter
                       value={formData.name}
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 placeholder-zinc-500 focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 outline-none transition-all"
                       placeholder="John Doe"
                     />
-                    <div className="absolute right-3 top-3">
-                      <div className="w-2 h-2 rounded-full bg-zinc-600" />
-                    </div>
                   </div>
                 </div>
 
@@ -157,14 +197,13 @@ export default function Contact() {
                   <div className="relative">
                     <input
                       type="email"
-                      name="email"
+                      name="email" // This must match your EmailJS template parameter
                       value={formData.email}
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-100 placeholder-zinc-500 focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 outline-none transition-all"
                       placeholder="john@example.com"
                     />
-                    <Mail className="absolute right-3 top-3 w-4 h-4 text-zinc-500" />
                   </div>
                 </div>
               </div>
@@ -173,7 +212,7 @@ export default function Contact() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-300">Your Message</label>
                 <textarea
-                  name="message"
+                  name="message" // This must match your EmailJS template parameter
                   value={formData.message}
                   onChange={handleChange}
                   required
@@ -183,7 +222,7 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button (this remains exactly as you had it) */}
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
