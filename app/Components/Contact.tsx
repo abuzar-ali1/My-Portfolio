@@ -1,17 +1,13 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-   Send,
-  CheckCircle, Loader2,
-  Calendar, Clock, Sparkles
-} from "lucide-react";
+import { Send, CheckCircle, Loader2, Calendar, Clock, Sparkles } from "lucide-react";
 import { contactInfo, socialLinks } from "../Data/data";
-import emailjs from '@emailjs/browser'; 
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
-  const formRef = useRef<HTMLFormElement>(null); // form ref
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,12 +15,27 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null); // <-- New error state
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  //  Functional EmailJS Submit Handler
+  // Initialize EmailJS with your public key
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    
+    if (!publicKey) {
+      console.error('EmailJS Public Key is missing. Check your .env.local file.');
+      setSubmitError('Email service configuration error. Please contact administrator.');
+      return;
+    }
+    
+    emailjs.init({
+      publicKey: publicKey,
+      blockHeadless: true, // Optional: prevents automatic form submissions by bots
+    });
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitError(null); // Clear previous errors
+    setSubmitError(null);
     setIsSubmitting(true);
 
     // Validate form data
@@ -34,13 +45,32 @@ export default function Contact() {
       return;
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setSubmitError("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      // Send email using EmailJS 
+      // Check if EmailJS is properly initialized
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("Email service configuration is incomplete.");
+      }
+
+      // Send email using EmailJS
       const result = await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        serviceId,
+        templateId,
         formRef.current!,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        {
+          publicKey: publicKey,
+        }
       );
 
       console.log('Email sent successfully:', result.text);
@@ -55,7 +85,19 @@ export default function Contact() {
 
     } catch (error: any) {
       console.error('Email sending failed:', error);
-      setSubmitError(`Failed to send message: ${error.text || 'Please try again later.'}`);
+      
+      // Provide more specific error messages
+      let errorMessage = 'Failed to send message. Please try again later.';
+      
+      if (error?.text) {
+        errorMessage = `Failed to send message: ${error.text}`;
+      } else if (error?.message?.includes("configuration")) {
+        errorMessage = "Email service configuration error. Please check environment variables.";
+      } else if (error?.status === 0 || error?.message?.includes("network")) {
+        errorMessage = "Network error. Please check your internet connection.";
+      }
+      
+      setSubmitError(errorMessage);
       setIsSubmitting(false);
     }
   };
@@ -66,7 +108,6 @@ export default function Contact() {
       [e.target.name]: e.target.value
     });
   };
-
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -166,7 +207,14 @@ export default function Contact() {
                   exit={{ opacity: 0, y: -10 }}
                   className="mb-6 p-4 rounded-xl bg-gradient-to-r from-red-900/20 to-rose-900/10 border border-red-800/30"
                 >
-                  <p className="text-red-300 text-sm">{submitError}</p>
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <div className="w-4 h-4 rounded-full bg-red-500 flex items-center justify-center">
+                        <span className="text-xs text-white">!</span>
+                      </div>
+                    </div>
+                    <p className="text-red-300 text-sm">{submitError}</p>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -181,7 +229,7 @@ export default function Contact() {
                   <div className="relative">
                     <input
                       type="text"
-                      name="name" // This must match your EmailJS template parameter
+                      name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
@@ -197,7 +245,7 @@ export default function Contact() {
                   <div className="relative">
                     <input
                       type="email"
-                      name="email" // This must match your EmailJS template parameter
+                      name="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -212,7 +260,7 @@ export default function Contact() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-300">Your Message</label>
                 <textarea
-                  name="message" // This must match your EmailJS template parameter
+                  name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
@@ -222,7 +270,7 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Submit Button (this remains exactly as you had it) */}
+              {/* Submit Button */}
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
@@ -367,7 +415,7 @@ export default function Contact() {
       >
         <p className="text-sm text-zinc-500">
           Prefer email? Reach out directly at{" "}
-          <a href="mailto:hello@abuzar.dev" className="text-zinc-300 hover:text-zinc-200 underline underline-offset-4">
+          <a href="mailto:abuzarali.dev@gmail.com" className="text-zinc-300 hover:text-zinc-200 underline underline-offset-4">
             abuzarali.dev@gmail.com
           </a>
         </p>
