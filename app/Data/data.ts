@@ -17,17 +17,28 @@ import  myPic from "./../../public/Images/myPic.jpeg";
 export const PROJECTS = [
   {
     id: 1,
+    title: "GitInsights | GitHub Analytics Dashboard",
+    description: "Professional analytics dashboard for monitoring GitHub repositories, commit history, and code frequency metrics.",
+    tech: ["Next.js", "TypeScript", "React",  "Tailwind" , "React-Force-Graph-2D"],
+    github : "https://github.com/abuzar-ali1/Git-Insights",
+    liveLink: "https://git-insights-tau.vercel.app",
+    image: "/Images/git_insight.png", 
+    size: "md:col-span-2 md:row-span-2",
+    icon: Github,
+  },
+  {
+    id: 2,
     title: "Dummy Shop",
     description: "A modern eCommerce platform  Dummy Shop.",
     tech: ["Next.js", "JavaScript", "React",  "Tailwind" , "Redux"],
     github : "https://github.com/abuzar-ali1/dummy-shop",
     liveLink: "https://dummy-shop-eosin.vercel.app",
     image: "/Images/dummy_shop.png", 
-    size: "md:col-span-2 md:row-span-2",
+    size: "md:col-span-1 md:row-span-1",
     icon: Store,
   },
   {
-    id: 2,
+    id: 3,
     title: "Fresh Cart",
     description: "Used Open Source API for this Simple store with Add to cart and Authentication integration.",
     tech: ["Redux", "JavaScript", "React",  "Tailwind"],
@@ -38,7 +49,7 @@ export const PROJECTS = [
     icon: Store,
   },
   {
-    id: 3,
+    id: 4,
     title: "Weather App",
     description: "Developed a weather app integrating a real-time weather API to display dynamic forecasts",
     tech: ["Next.js", "TypeScript", "React",  "Tailwind" , "ReactQuery"],
@@ -48,7 +59,7 @@ export const PROJECTS = [
     size: "md:col-span-1 md:row-span-1",
     icon: CloudDrizzle,
   },  {
-    id: 4,
+    id: 5,
     title: "Google Classroom Clone",
     description: "Developed a classroom management web app featuring CRUD operations for assignments with real-time state persistence via localStorage.",
     tech: ["Next.js", "React", "Redux", "JavaScript",  "MUI"],
@@ -58,7 +69,7 @@ export const PROJECTS = [
     size: "md:col-span-1 md:row-span-1",
     icon: School,
   },  {
-    id: 5,
+    id: 6,
     title: "Modern Todo App",
     description: "Developed a weather app featuring add/edit/delete via modal form, search, filters (All/Active/Completed), and smooth animated list transitions",
     tech: ["Next.js", "JavaSript", "React",  "Mui" , "Framer Motion"],
@@ -68,7 +79,7 @@ export const PROJECTS = [
     size: "md:col-span-1 md:row-span-1",
     icon: ListTodo,
   },  {
-    id: 6,
+    id: 7,
     title: "Organio Shop",
     description: "Built an E-commerce management website , features functions like add to cart , sign in sign up and . Implemented responsive using Bootstrap , dynamic routing for multi pages.",
     tech: ["HTML",   "CSS" ,"JavaScript", "Bootstrap"],
