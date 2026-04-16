@@ -7,7 +7,7 @@ class Project(models.Model):
     tech_stack = models.JSONField(default=list) 
     github_url = models.URLField(blank=True)
     live_url = models.URLField(blank=True)
-    image_url = models.CharField(max_length=500) 
+    image = models.ImageField(upload_to='projects/', blank=True, null=True)
     
     ai_insight = models.TextField(blank=True, null=True) 
     
