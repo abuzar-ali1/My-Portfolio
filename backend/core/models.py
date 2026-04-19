@@ -8,7 +8,12 @@ class Project(models.Model):
     github_url = models.URLField(blank=True)
     live_url = models.URLField(blank=True)
     image = models.ImageField(upload_to='projects/', blank=True, null=True)
-    
+    display_type = models.CharField(max_length=50, default='standard') 
+    icon_name = models.CharField(
+        max_length=50, 
+        default="Code", 
+        help_text="e.g., Github, Store, CloudDrizzle, School"
+    )
     ai_insight = models.TextField(blank=True, null=True) 
     
     created_at = models.DateTimeField(auto_now_add=True)

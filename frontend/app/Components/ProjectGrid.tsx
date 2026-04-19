@@ -37,6 +37,8 @@ const itemVariants = {
 export default function ProjectGrid() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
+
+
   return (
     <section id="projects" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <motion.div
