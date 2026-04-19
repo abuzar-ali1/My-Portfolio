@@ -7,27 +7,20 @@ import ProjectGrid from "./Components/ProjectGrid";
 import Skills from "./Components/Skills";
 
 
-export default function Home() {
-
-  async function fetchProjects(data: any) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    const projects = await response.json();
-    return projects;
-
-  }
-
-
+async function getProjects() {
+const res = await fetch('http://localhost:8000/api/projects/', { 
+  cache: 'no-store' 
+});
+if (!res.ok) return [];
+return res.json();
+export default async function Home() {
+ 
+const backendProjects = await getProjects();
 
   return (
     <>
     <AboutHero/>
-    <ProjectGrid/>
+    <ProjectGrid projects={backendProjects} />
     <Skills/>
     <Contact/>
     <Certifications/>

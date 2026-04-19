@@ -1,200 +1,176 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Github,  ArrowRight, Eye } from "lucide-react";
-import { PROJECTS } from "../Data/data";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Github, ArrowRight, Eye, Sparkles, 
+  Store, CloudDrizzle, School, ListTodo, Code 
+} from "lucide-react";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
+// 1. We create a map to translate Django strings into React Components
+const iconMap: Record<string, React.ElementType> = {
+  Github, Store, CloudDrizzle, School, ListTodo, Code
 };
 
-const itemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { 
-    y: 0, 
-    opacity: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 15,
-    }
-  },
-  hover: {
-    y: -5,
-    transition: {
-      type: "spring" as const,
-      stiffness: 400,
-      damping: 25,
-    }
-  }
-};
-export default function ProjectGrid() {
+// 2. We define the TypeScript interface for your Django data
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  tech_stack: string[]; // From Django JSONField
+  github_url: string;
+  live_url: string;
+  image: string; // The URL from Django Media
+  size: string; // e.g., "md:col-span-2 md:row-span-2"
+  icon_name: string;
+  ai_insight?: string; // The new AI field!
+}
+
+export default function ProjectGrid({ projects }: { projects: Project[] }) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  };
 
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+  };
 
   return (
     <section id="projects" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ once: true }}
         className="mb-16"
       >
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-px w-12 bg-gradient-to-r from-zinc-600 to-zinc-500" />
-          <span className="text-sm font-medium text-zinc-400 uppercase tracking-wider">
-            Portfolio
+          <div className="h-px w-12 bg-gradient-to-r from-blue-500 to-cyan-500" />
+          <span className="text-sm font-medium text-blue-400 uppercase tracking-wider">
+            Live Database
           </span>
         </div>
-        
         <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-4">
-          Selected <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-300 to-zinc-400">Work</span>
+          Full Stack <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Architecture</span>
         </h2>
-        
         <p className="text-lg text-zinc-400 max-w-2xl">
-          A collection of projects showcasing clean code, modern design, and innovative solutions.
+          Powered by a custom Python/Django backend. Real-time data, AI insights, and modern Bento-grid design.
         </p>
       </motion.div>
 
-      {/* Projects Grid */}
+      {/* The Bento Grid (Note the dense flow for perfect packing) */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        viewport={{ once: true }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 grid-flow-dense"
       >
-        {PROJECTS.map((project) => (
-          <motion.div
-            key={project.id}
-            variants={itemVariants}
-            whileHover="hover"
-            onMouseEnter={() => setHoveredId(project.id)}
-            onMouseLeave={() => setHoveredId(null)}
-            className={`relative ${project.size}`}
-          >
-            <Card className="group relative h-full overflow-hidden rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-zinc-900/30 backdrop-blur-sm hover:border-zinc-600 transition-all duration-300">
-              
-              <div className="absolute inset-0">
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${project.image})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/80 to-zinc-900/40 opacity-90" />
-              </div>
+        {projects.map((project) => {
+          // Dynamically grab the icon from our map, fallback to <Code />
+          const IconComponent = iconMap[project.icon_name] || Code;
 
-              {/* Content Container */}
-              <div className="relative z-10 p-6 h-full flex flex-col justify-between">
-                <div>
-                  {/* Icon with Zinc styling */}
-                  <div className="mb-5">
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 group-hover:border-zinc-600 transition-colors">
-                      <project.icon className="w-5 h-5 text-zinc-300 group-hover:text-zinc-200 transition-colors" />
+          return (
+            <motion.div
+              key={project.id}
+              variants={itemVariants}
+              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              // This dynamically applies the layout class from Django
+              className={`relative group ${project.size}`} 
+            >
+              <Card className="h-full overflow-hidden rounded-3xl border border-zinc-800/50 bg-zinc-950/50 backdrop-blur-md hover:border-blue-500/30 transition-all duration-500 flex flex-col">
+                
+                {/* Optional Background Image Logic */}
+                {project.image && (
+                  <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500 mix-blend-overlay">
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                  </div>
+                )}
+
+                <div className="relative z-10 p-8 flex flex-col flex-grow">
+                  
+                  {/* Top Row: Icon & AI Badge */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-blue-500/50 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition-all duration-300">
+                      <IconComponent className="w-6 h-6 text-zinc-400 group-hover:text-blue-400" />
                     </div>
+                    
+                    {/* The "AI Insight" Badge */}
+                    {project.ai_insight && (
+                      <Badge className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 flex items-center gap-1.5 animate-pulse">
+                        <Sparkles className="w-3 h-3" />
+                        AI Analyzed
+                      </Badge>
+                    )}
                   </div>
 
-                  {/* Project Info */}
-                  <h3 className="text-xl font-bold text-zinc-100 mb-3 leading-tight group-hover:text-white transition-colors">
+                  {/* Text Content */}
+                  <h3 className="text-2xl font-bold text-zinc-100 mb-3 tracking-tight">
                     {project.title}
                   </h3>
-
-                  <p className="text-zinc-400 text-sm mb-6 leading-relaxed line-clamp-3 group-hover:text-zinc-300 transition-colors">
+                  <p className="text-zinc-400 text-sm leading-relaxed mb-6 flex-grow">
                     {project.description}
                   </p>
 
-                  {/* Tech Stack Badges */}
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {project.tech.map((tech) => (
+                  {/* AI Insight Terminal Box (Reveals on Hover if it exists) */}
+                  <AnimatePresence>
+                    {project.ai_insight && hoveredId === project.id && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mb-6 rounded-lg bg-black/40 border border-zinc-800 p-3 overflow-hidden"
+                      >
+                        <p className="text-xs font-mono text-cyan-400">
+                          <span className="text-zinc-500">&gt; AI_Insight:</span> {project.ai_insight}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Tech Stack */}
+                  <div className="flex flex-wrap gap-2 mb-8 mt-auto">
+                    {project.tech_stack.map((tech) => (
                       <Badge 
                         key={tech}
                         variant="secondary"
-                        className="px-3 py-1 text-xs font-medium bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-300 border border-zinc-700/50 hover:border-zinc-600/50 transition-colors"
+                        className="bg-zinc-900 text-zinc-300 border-zinc-800 font-mono text-[10px] tracking-wider uppercase px-2 py-1"
                       >
                         {tech}
                       </Badge>
                     ))}
                   </div>
-                </div>
 
-                {/* Action links _ Matching navbar */}
-                <div className="flex items-center justify-between pt-6 border-t border-zinc-800 group-hover:border-zinc-700 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <motion.a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors group/link"
-                      whileHover={{ x: 3 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <div className="p-1.5 rounded bg-zinc-800/50 group-hover/link:bg-zinc-700/50 transition-colors">
-                        <Github className="w-4 h-4" />
-                      </div>
-                      <span>Code</span>
-                    </motion.a>
-                    
-                    <motion.a
-                      href={project.liveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors group/link"
-                      whileHover={{ x: 3 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <div className="p-1.5 rounded bg-zinc-800/50 group-hover/link:bg-zinc-700/50 transition-colors">
-                        <Eye className="w-4 h-4" />
-                      </div>
-                      <span>Live Demo</span>
-                    </motion.a>
+                  {/* Links Row */}
+                  <div className="flex items-center gap-4 pt-6 border-t border-zinc-800/50">
+                    {project.github_url && (
+                      <a href={project.github_url} target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
+                        <Github className="w-4 h-4" /> Code
+                      </a>
+                    )}
+                    {project.live_url && (
+                      <a href={project.live_url} target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
+                        <Eye className="w-4 h-4" /> Live
+                      </a>
+                    )}
+                    <div className="ml-auto">
+                      <ArrowRight className={`w-5 h-5 transition-all duration-300 ${hoveredId === project.id ? 'text-blue-400 translate-x-1' : 'text-zinc-600'}`} />
+                    </div>
                   </div>
-                  
-                  {/* Animated Arrow */}
-                  <motion.div
-                    className="text-zinc-600 group-hover:text-zinc-400"
-                    animate={{ 
-                      rotate: hoveredId === project.id ? 45 : 0,
-                      scale: hoveredId === project.id ? 1.1 : 1
-                    }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                  </motion.div>
+
                 </div>
-              </div>
-
-              {/* Hover Effect Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-600/5 via-transparent to-zinc-700/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            </Card>
-
-            {/* Subtle Glow Effect */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-zinc-700/0 via-zinc-600/5 to-zinc-700/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* View More Section - Consistent with Navbar CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5 }}
-        className="mt-20 text-center"
-      >
-       
-        
-        <p className="mt-6 text-zinc-500 text-sm">
-          Need a custom solution?{" "}
-          <a href="#contact" className="text-zinc-300 hover:text-zinc-200 underline underline-offset-4">
-            Let's build something
-          </a>
-        </p>
+              </Card>
+            </motion.div>
+          );
+        })}
       </motion.div>
     </section>
   );
