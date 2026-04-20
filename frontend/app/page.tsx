@@ -19,7 +19,7 @@ export default async function Home() {
   return (
     <>
       <AboutHero />
-      <ProjectGrid />
+      <ProjectGrid projects={backendProjects} />
       <Skills />
       <Contact />
       <Certifications />
