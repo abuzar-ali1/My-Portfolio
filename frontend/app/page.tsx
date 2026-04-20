@@ -6,26 +6,25 @@ import AboutHero from "./Components/AboutHero";
 import ProjectGrid from "./Components/ProjectGrid";
 import Skills from "./Components/Skills";
 
-
 async function getProjects() {
-const res = await fetch('http://localhost:8000/api/projects/', { 
-  cache: 'no-store' 
-});
-if (!res.ok) return [];
-return res.json();
+  const res = await fetch("http://localhost:8000/api/projects/", {
+    cache: "no-store",
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
 export default async function Home() {
- 
-const backendProjects = await getProjects();
+  const backendProjects = await getProjects();
 
   return (
     <>
-    <AboutHero/>
-    <ProjectGrid projects={backendProjects} />
-    <Skills/>
-    <Contact/>
-    <Certifications/>
-    <Achievements/>
-    <Education/>
+      <AboutHero />
+      <ProjectGrid />
+      <Skills />
+      <Contact />
+      <Certifications />
+      <Achievements />
+      <Education />
     </>
   );
 }
