@@ -1,259 +1,228 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {   Award, Calendar,Globe, ChevronRight, Sparkles, Zap} from "lucide-react";
+import { Award, Calendar, Globe, ChevronRight, Sparkles, Terminal, ShieldCheck } from "lucide-react";
 import { certifications, stats } from "../Data/data";
 
-
-export default function Certifications() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  };
-
- const itemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { 
-    y: 0, 
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
     opacity: 1,
-    transition: { 
-      type: "spring" as const, 
-      stiffness: 100, 
-      damping: 15 
-    }
-  },
-  hover: {
-    y: -5,
-    transition: {
-      type: "spring" as const,
-      stiffness: 400
-    }
-  }
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  }),
 };
 
+export default function Certifications() {
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+
   return (
-    <section id="certifications" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/*  Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        className="mb-16"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-px w-12 bg-gradient-to-r from-zinc-600 to-zinc-500" />
-          <span className="text-sm font-medium text-zinc-400 uppercase tracking-wider">
-            Credentials
-          </span>
-        </div>
+    <section
+      id="certifications"
+      className="relative py-28 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a] overflow-hidden"
+    >
+      {/* ── Dot grid background ── */}
+      <svg className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none">
+        <defs>
+          <pattern id="cert-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#00d4ff" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#cert-dots)" />
+      </svg>
+
+      {/* Ambient glow right */}
+      <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-[#00d4ff]/[0.02] rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto">
         
-        <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-4">
-          Certifications & <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-300 to-zinc-400">Training</span>
-        </h2>
-        
-        <p className="text-lg text-zinc-400 max-w-2xl">
-          Professional certifications and specialized training that validate my technical expertise.
-        </p>
-      </motion.div>
+        {/* ── Section Header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-16"
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-mono text-[10px] text-[#00d4ff]/50 tracking-[0.2em] uppercase">
+              03 / credentials
+            </span>
+            <div className="flex-1 h-px bg-white/[0.05]" />
+            <span className="font-mono text-[10px] text-white/15 tracking-widest">
+              sys.verify_certs()
+            </span>
+          </div>
 
-      {/* Stats  */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
-      >
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.label}
-            variants={itemVariants}
-            className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-zinc-800/50 border border-zinc-700/50">
-                <stat.icon className="w-4 h-4 text-zinc-300" />
+          <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-none">
+            Verified
+            <span className="block text-white/20">Expertise.</span>
+          </h2>
+        </motion.div>
+
+        {/* ── Stats Terminal Grid ── */}
+        <motion.div
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.06] border border-white/[0.06] mb-16"
+        >
+          {stats.map((stat, i) => (
+            <div key={stat.label} className="bg-[#0a0a0a] p-6 group hover:bg-[#00d4ff]/[0.04] transition-colors">
+              <stat.icon className="w-5 h-5 text-white/20 group-hover:text-[#00d4ff] mb-4 transition-colors" />
+              <div className="flex items-baseline gap-2">
+                <span className="font-mono text-3xl font-bold text-white group-hover:text-[#00d4ff] transition-colors">
+                  {stat.value}
+                </span>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-zinc-100">{stat.value}</div>
-                <div className="text-sm text-zinc-500">{stat.label}</div>
-              </div>
+              <p className="font-mono text-[10px] text-white/30 uppercase tracking-widest mt-2">
+                {stat.label}
+              </p>
             </div>
-          </motion.div>
-        ))}
-      </motion.div>
+          ))}
+        </motion.div>
 
-      {/* Certifications Timeline */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="relative"
-      >
-        <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-zinc-800 via-zinc-700 to-zinc-800 -translate-x-1/2" />
+        {/* ── Certifications List (System Log Style) ── */}
+        <div className="space-y-4 mb-16">
+          {certifications.map((cert, i) => {
+            const num = String(i + 1).padStart(2, "0");
+            const isHovered = hoveredId === cert.id;
 
-        {certifications.map((cert, index) => (
-          <motion.div
-            key={cert.id}
-            variants={itemVariants}
-            whileHover="hover"
-            className={`relative mb-12 lg:mb-16 ${index % 2 === 0 ? 'lg:pr-1/2' : 'lg:pl-1/2 lg:text-right'}`}
-          >
-            {/* Timeline dot */}
-            <div className={`absolute top-6 lg:top-8 ${index % 2 === 0 ? 'lg:right-1/2 lg:mr-6' : 'lg:left-1/2 lg:ml-6'} left-6 lg:left-auto`}>
-              <div className="relative">
-                <div className="w-4 h-4 rounded-full bg-gradient-to-r from-zinc-600 to-zinc-700 border-2 border-zinc-800" />
-                <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-zinc-600/20 to-zinc-700/20 animate-pulse" />
-              </div>
-            </div>
+            return (
+              <motion.div
+                key={cert.id}
+                custom={i + 1}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                onMouseEnter={() => setHoveredId(cert.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                className="group relative bg-[#0a0a0a] border border-white/[0.05] hover:bg-[#0d0d0d] transition-colors duration-300 overflow-hidden"
+              >
+                {/* Cyan left border on hover */}
+                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#00d4ff] scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom" />
 
-            {/* Certi Card */}
-            <motion.div
-              variants={itemVariants}
-              className="ml-10 lg:ml-0"
-            >
-              <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-zinc-700 transition-all group">
-                {/* card header */}
-                <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-start lg:items-center gap-4 mb-6`}>
-                  <div className={`p-3 rounded-xl bg-gradient-to-br ${cert.color} border border-zinc-700/50`}>
-                    <cert.icon className="w-6 h-6 text-zinc-300" />
-                  </div>
+                <div className="p-6 md:p-8 flex flex-col lg:flex-row gap-8 lg:items-center">
                   
-                  <div className={`flex-1 ${index % 2 === 0 ? 'lg:text-left' : 'lg:text-right'}`}>
-                    <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h3 className="text-xl font-bold text-zinc-100">{cert.title}</h3>
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-zinc-800/50 text-zinc-300 border border-zinc-700/50">
-                        {cert.duration}
+                  {/* Left: Meta Info */}
+                  <div className="flex lg:flex-col items-center lg:items-start justify-between lg:justify-center gap-4 lg:w-48 flex-shrink-0">
+                    <div className="flex items-center gap-4">
+                      <span className="font-mono text-[11px] text-white/15 tracking-[0.2em]">
+                        {num}
                       </span>
+                      <div className="w-10 h-10 border border-white/[0.07] group-hover:border-[#00d4ff]/30 flex items-center justify-center transition-colors bg-[#0a0a0a]">
+                        <cert.icon className="w-4 h-4 text-white/20 group-hover:text-[#00d4ff]/60 transition-colors" />
+                      </div>
                     </div>
                     
-                    <div className="flex flex-wrap items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <Globe className="w-4 h-4 text-zinc-500" />
-                        <span className="text-sm font-medium text-zinc-300">{cert.institution}</span>
+                    <div className="flex flex-col items-end lg:items-start text-right lg:text-left gap-1.5">
+                      <div className="flex items-center gap-1.5 font-mono text-[10px] text-[#00d4ff]/70 tracking-widest uppercase">
+                        <Calendar className="w-3 h-3" /> {cert.period}
                       </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-zinc-500" />
-                        <span className="text-sm text-zinc-400">{cert.period}</span>
+                      <div className="font-mono text-[9px] text-white/30 tracking-widest uppercase px-2 py-0.5 border border-white/[0.06]">
+                        {cert.duration}
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* description */}
-                <p className="text-zinc-400 mb-6 leading-relaxed">
-                  {cert.description}
-                </p>
+                  {/* Center: Details */}
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-white/90 group-hover:text-white mb-2 transition-colors">
+                      {cert.title}
+                    </h3>
+                    <div className="flex items-center gap-2 font-mono text-[11px] text-white/40 uppercase tracking-widest mb-4">
+                      <Globe className="w-3.5 h-3.5" />
+                      {cert.institution}
+                    </div>
+                    <p className="text-white/30 text-sm leading-relaxed mb-6 max-w-2xl group-hover:text-white/40 transition-colors">
+                      {cert.description}
+                    </p>
 
-                {/* highlights */}
-                {cert.highlights && (
-                  <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-zinc-300 mb-3">Key Highlights:</h4>
-                    <ul className="space-y-2">
-                      {cert.highlights.map((highlight, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <Zap className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-zinc-400">{highlight}</span>
-                        </li>
+                    {/* Tech / Skills tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {cert.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="font-mono text-[9px] tracking-widest text-white/20 border border-white/[0.06] px-2.5 py-1 uppercase group-hover:text-[#00d4ff]/50 group-hover:border-[#00d4ff]/20 transition-colors"
+                        >
+                          {skill}
+                        </span>
                       ))}
-                    </ul>
+                    </div>
                   </div>
-                )}
 
-                {/* skills */}
-                <div>
-                  <h4 className="text-sm font-semibold text-zinc-300 mb-3">Skills Acquired:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {cert.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1.5 rounded-lg text-sm font-medium bg-zinc-800/50 text-zinc-300 border border-zinc-700/50 hover:bg-zinc-700/50 hover:border-zinc-600/50 transition-colors"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                  {/* Right: Validation indicator (Only visible on hover) */}
+                  <div className="hidden lg:flex items-center justify-center w-12 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ShieldCheck className="w-5 h-5 text-[#00ff88]/50" />
                   </div>
                 </div>
+              </motion.div>
+            );
+          })}
+        </div>
 
-                {/* Hover arrow */}
-                <div className={`absolute ${index % 2 === 0 ? 'right-6' : 'left-6'} top-6 opacity-0 group-hover:opacity-100 transition-opacity`}>
-                  <ChevronRight className={`w-5 h-5 text-zinc-600 ${index % 2 === 0 ? '' : 'rotate-180'}`} />
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        ))}
-      </motion.div>
+        {/* ── Continuous Learning Protocol ── */}
+        <motion.div
+          custom={certifications.length + 1}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="border border-white/[0.05] bg-[#0a0a0a] p-8 md:p-10 relative overflow-hidden"
+        >
+          {/* Subtle animated scanline */}
+          <motion.div
+            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00d4ff]/20 to-transparent pointer-events-none"
+            animate={{ top: ["0%", "100%"] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          />
 
-      {/* Additional Trainings */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-16"
-      >
-        <div className="p-8 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/30 to-zinc-900/10 backdrop-blur-sm">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 rounded-xl bg-zinc-800/50 border border-zinc-700/50">
-              <Sparkles className="w-6 h-6 text-zinc-300" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-zinc-100">Continuous Learning</h3>
-              <p className="text-sm text-zinc-500">Committed to staying updated with latest technologies</p>
+          <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/[0.05]">
+            <Terminal className="w-4 h-4 text-[#00d4ff]/50" />
+            <span className="font-mono text-[11px] text-white/20 tracking-widest uppercase">
+              exec continuous_learning.sh
+            </span>
+            <div className="ml-auto flex items-center gap-2">
+              <span className="font-mono text-[9px] text-[#00ff88] uppercase tracking-widest">Active</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88] animate-pulse" />
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <h4 className="font-medium text-zinc-300">Learning Philosophy</h4>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                I believe in continuous skill enhancement through certifications, online courses, and hands-on projects. Each certification represents not just completion, but practical application of knowledge.
+          <div className="grid md:grid-cols-[1fr_1.5fr] gap-10">
+            <div>
+              <h4 className="font-mono text-[12px] text-white/50 tracking-widest uppercase mb-4 flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#00d4ff]" /> Philosophy
+              </h4>
+              <p className="text-sm text-white/30 leading-relaxed">
+                Technology moves too fast for static knowledge. I treat my skill set as a continuous integration pipeline—always learning, testing, and deploying new concepts into my workflow.
               </p>
             </div>
             
-            <div className="space-y-3">
-              <h4 className="font-medium text-zinc-300">Current Focus</h4>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-sm text-zinc-400">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  Advanced React Patterns & Performance Optimization
-                </li>
-                <li className="flex items-center gap-2 text-sm text-zinc-400">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                  Cloud Deployment & DevOps Practices
-                </li>
-                <li className="flex items-center gap-2 text-sm text-zinc-400">
-                  <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-                  Advanced Animation & Micro-interactions
-                </li>
+            <div>
+              <h4 className="font-mono text-[12px] text-white/50 tracking-widest uppercase mb-4">
+                // Current Focus Threads
+              </h4>
+              <ul className="space-y-3">
+                {[
+                  "Advanced Next.js App Router Architecture",
+                  "AI Integration & LLM Fine-Tuning Patterns",
+                  "PostgreSQL Performance Optimization"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="font-mono text-[#00d4ff]/40 text-[10px] mt-0.5">{`>`}</span>
+                    <span className="font-mono text-[11px] text-white/40 tracking-wide">{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mt-16"
-      >
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-zinc-800 to-zinc-900 border border-zinc-700 hover:border-zinc-600 text-zinc-100 font-semibold text-sm transition-all group/cta"
-        >
-          <Award className="w-5 h-5" />
-          <span>Discuss My Qualifications</span>
-          <ChevronRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover/cta:opacity-100 group-hover/cta:translate-x-0 transition-all" />
-        </a>
-      </motion.div>
+      </div>
     </section>
   );
 }
