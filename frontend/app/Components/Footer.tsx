@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Heart, Coffee, Copyright, ArrowUp, 
   Mail, Github, Linkedin, Twitter, 
-  MapPin, Phone, ExternalLink, Sparkles 
+  MapPin, Phone, ExternalLink, Terminal, ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
 
 const footerLinks = [
   {
-    title: "Navigation",
+    title: "// navigation",
     links: [
       { name: "Home", href: "#home" },
       { name: "Projects", href: "#projects" },
@@ -22,42 +22,37 @@ const footerLinks = [
     ]
   },
   {
-    title: "Resources",
+    title: "// external_resources",
     links: [
       { name: "GitHub", href: "https://github.com/abuzar-ali1", icon: Github },
       { name: "LinkedIn", href: "https://www.linkedin.com/in/abuzar-ali01", icon: Linkedin },
       { name: "Twitter", href: "https://x.com/Abu_zar_Ali", icon: Twitter },
-      { name: "Blog", href: "#", icon: ExternalLink },
+      { name: "Dev Blog", href: "#", icon: ExternalLink },
     ]
   },
   {
-    title: "Legal",
+    title: "// system_legal",
     links: [
       { name: "Privacy Policy", href: "#" },
       { name: "Terms of Service", href: "#" },
-      { name: "Cookie Policy", href: "#" },
+      { name: "Cookie Protocol", href: "#" },
     ]
   }
 ];
 
 const contactInfo = [
-  { icon: Mail, text: "hello@abuzar.dev", href: "mailto:hello@abuzar.dev" },
-  { icon: Phone, text: "+92 123 456 7890", href: "tel:+921234567890" },
-  { icon: MapPin, text: "Karachi, Pakistan", href: "#" },
+  { icon: Mail, text: "abuzarali.dev@gmail.com", href: "mailto:abuzarali.dev@gmail.com" },
+  { icon: Phone, text: "Secure Line", href: "#" },
+  { icon: MapPin, text: "Lahore, Pakistan", href: "#" },
 ];
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState<number>(2024);
   const [scrollTop, setScrollTop] = useState<number>(0);
 
- useEffect(() => {
-    // This is now accessing the state setter correctly
+  useEffect(() => {
     setCurrentYear(new Date().getFullYear());
-    
-    const handleScroll = () => {
-      setScrollTop(window.scrollY);
-    };
-    
+    const handleScroll = () => setScrollTop(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -66,194 +61,164 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+    })
   };
 
- const itemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { 
-    y: 0, 
-    opacity: 1,
-    transition: { type: "spring" as const, stiffness: 100, damping: 15 }
-  }
-};
-
   return (
-    <footer className="relative border-t border-zinc-800 bg-gradient-to-b from-zinc-900 to-black">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-zinc-800/5 blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-zinc-700/5 blur-3xl" />
-      </div>
+    <footer className="relative bg-[#050505] border-t border-white/[0.05] overflow-hidden">
+      
+      {/* ── Background Matrix ── */}
+      <svg className="absolute inset-0 w-full h-full opacity-[0.015] pointer-events-none">
+        <defs>
+          <pattern id="footer-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00d4ff" strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#footer-grid)" />
+      </svg>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#00d4ff]/[0.015] rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12"
-        >
-          {/* Brand Column */}
-          <motion.div variants={itemVariants} className="space-y-4">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
+        {/* ── Top Status Bar ── */}
+        <div className="flex items-center gap-4 mb-16 pb-6 border-b border-white/[0.05]">
+          <span className="font-mono text-[10px] text-[#00d4ff]/50 tracking-[0.2em] uppercase">
+            sys.terminate()
+          </span>
+          <div className="flex-1 h-px bg-white/[0.02]" />
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88] animate-pulse" />
+            <span className="font-mono text-[9px] text-[#00ff88]/60 tracking-widest uppercase">
+              All Systems Operational
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+          
+          {/* ── Brand Column ── */}
+          <motion.div custom={0} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="lg:col-span-4 space-y-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center border border-zinc-600/50">
-                <Sparkles className="w-5 h-5 text-zinc-300" />
+              <div className="w-10 h-10 border border-white/[0.05] bg-white/[0.02] flex items-center justify-center">
+                <Terminal className="w-5 h-5 text-[#00d4ff]" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-zinc-100">Abuzar Ali</h2>
-                <p className="text-sm text-zinc-500">Frontend Developer</p>
+                <h2 className="text-xl font-bold text-white tracking-tight">AbuZar<span className="text-[#00d4ff]">.dev</span></h2>
+                <p className="font-mono text-[10px] text-white/40 tracking-widest uppercase mt-0.5">Full Stack Engineer</p>
               </div>
             </div>
             
-            <p className="text-zinc-400 text-sm leading-relaxed">
-              Crafting exceptional digital experiences with modern technologies and clean code.
+            <p className="text-white/30 text-sm leading-relaxed max-w-sm">
+              Architecting scalable backend systems and engineering high-performance interfaces. Based in Lahore, PK. Available for global deployment.
             </p>
             
-            <div className="flex items-center gap-3 pt-2">
+            <div className="space-y-3 pt-2">
               {contactInfo.map((info, index) => (
-                <motion.a
-                  key={info.text}
-                  href={info.href}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -2 }}
-                  className="p-2 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
-                  aria-label={info.text}
-                >
-                  <info.icon className="w-4 h-4" />
-                </motion.a>
+                <div key={index} className="flex items-center gap-3">
+                  <info.icon className="w-4 h-4 text-[#00d4ff]/50" />
+                  {info.href !== "#" ? (
+                    <a href={info.href} className="font-mono text-[11px] text-white/40 hover:text-white transition-colors tracking-wide">
+                      {info.text}
+                    </a>
+                  ) : (
+                    <span className="font-mono text-[11px] text-white/40 tracking-wide">{info.text}</span>
+                  )}
+                </div>
               ))}
             </div>
           </motion.div>
 
-          {/* Links Columns */}
-          {footerLinks.map((column, colIndex) => (
-            <motion.div 
-              key={column.title} 
-              variants={itemVariants}
-              transition={{ delay: colIndex * 0.05 }}
-            >
-              <h3 className="text-lg font-semibold text-zinc-100 mb-4">{column.title}</h3>
-              <ul className="space-y-3">
-                {column.links.map((link, linkIndex) => (
-                  <motion.li
-                    key={link.name}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: (colIndex * 0.1) + (linkIndex * 0.05) }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="group flex items-center gap-2 text-zinc-400 hover:text-zinc-300 text-sm transition-colors"
-                    >
-                      {'icon' in link && link.icon ? <link.icon className="w-4 h-4" /> : null}
-                      <span>{link.name}</span>
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ExternalLink className="w-3 h-3" />
-                      </span>
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </motion.div>
+          {/* ── Links Columns ── */}
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
+            {footerLinks.map((column, colIndex) => (
+              <motion.div 
+                key={column.title} 
+                custom={colIndex + 1}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <h3 className="font-mono text-[11px] text-[#00d4ff]/70 uppercase tracking-widest mb-6 border-l-2 border-[#00d4ff]/30 pl-3">
+                  {column.title}
+                </h3>
+                <ul className="space-y-4">
+                  {column.links.map((link, linkIndex) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="group flex items-center gap-2 font-mono text-[11px] text-white/30 hover:text-white transition-colors tracking-wide uppercase"
+                      >
+                        <span className="text-[#00d4ff]/0 group-hover:text-[#00d4ff]/60 transition-colors">{'>'}</span>
+                        {'icon' in link && link.icon ? <link.icon className="w-3.5 h-3.5 text-white/20 group-hover:text-[#00d4ff] transition-colors" /> : null}
+                        <span>{link.name}</span>
+                        {link.name === "Dev Blog" && (
+                          <span className="px-1.5 py-0.5 border border-[#00ff88]/20 bg-[#00ff88]/5 text-[#00ff88] text-[8px] ml-1">NEW</span>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
-        {/* Divider */}
+        {/* ── Bottom Bar ── */}
         <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: "100%" }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent my-8"
-        />
-
-        {/* Bottom Bar */}
-        <motion.div
-          variants={containerVariants}
+          custom={4}
+          variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row items-center justify-between gap-4"
+          className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-white/[0.05]"
         >
           {/* Copyright */}
-          <motion.div variants={itemVariants} className="flex items-center gap-2 text-zinc-500 text-sm">
-            <Copyright className="w-4 h-4" />
-            <span>{currentYear} Abuzar Ali. All rights reserved.</span>
-            <span className="hidden sm:inline">•</span>
-            <span className="flex items-center gap-1">
-              Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> and <Coffee className="w-4 h-4 text-amber-600 mx-1" />
+          <div className="flex items-center gap-3 font-mono text-[10px] text-white/20 tracking-widest uppercase">
+            <Copyright className="w-3.5 h-3.5" />
+            <span>{currentYear} AbuZar Ali.</span>
+            <span className="hidden sm:inline">|</span>
+            <span className="flex items-center gap-1.5">
+              Built with Next.js <ShieldCheck className="w-3 h-3 text-[#00d4ff]/50 mx-0.5" /> Django
             </span>
-          </motion.div>
+          </div>
 
           {/* Social Links */}
-          <motion.div variants={itemVariants} className="flex items-center gap-3">
-            <span className="text-sm text-zinc-500">Follow my journey:</span>
-            <div className="flex items-center gap-2">
-              <motion.a
-                href="https://github.com/abuzar-ali1"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="w-4 h-4" />
-              </motion.a>
-              <motion.a
-                href="https://www.linkedin.com/in/abuzar-ali01/"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </motion.a>
-              <motion.a
-                href="https://x.com/Abu_zar_Ali"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-4 h-4" />
-              </motion.a>
-            </div>
-          </motion.div>
+          <div className="flex items-center gap-3">
+            <a href="https://github.com/abuzar-ali1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center border border-white/[0.05] bg-white/[0.02] text-white/30 hover:text-[#00d4ff] hover:border-[#00d4ff]/30 transition-all">
+              <Github className="w-4 h-4" />
+            </a>
+            <a href="https://www.linkedin.com/in/abuzar-ali01/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center border border-white/[0.05] bg-white/[0.02] text-white/30 hover:text-[#00d4ff] hover:border-[#00d4ff]/30 transition-all">
+              <Linkedin className="w-4 h-4" />
+            </a>
+            <a href="https://x.com/Abu_zar_Ali" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center border border-white/[0.05] bg-white/[0.02] text-white/30 hover:text-[#00d4ff] hover:border-[#00d4ff]/30 transition-all">
+              <Twitter className="w-4 h-4" />
+            </a>
+          </div>
         </motion.div>
 
-        {/* Back to Top Button */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: scrollTop > 500 ? 1 : 0,
-            y: scrollTop > 500 ? 0 : 20
-          }}
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 p-3 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 hover:border-zinc-600 transition-all shadow-lg shadow-black/30 z-40"
-          aria-label="Scroll to top"
-        >
-          <ArrowUp className="w-5 h-5" />
-        </motion.button>
-      </div>
+        {/* ── Return to Root Button (Scroll Top) ── */}
+        <AnimatePresence>
+          {scrollTop > 500 && (
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              onClick={scrollToTop}
+              className="fixed bottom-8 right-8 z-50 group flex items-center gap-2 px-4 py-2 border border-[#00d4ff]/30 bg-[#0a0a0a] text-[#00d4ff] hover:bg-[#00d4ff]/10 transition-all shadow-[0_0_15px_rgba(0,212,255,0.15)]"
+              aria-label="Return to top"
+            >
+              <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+              <span className="font-mono text-[10px] tracking-widest uppercase hidden sm:inline">sys.up()</span>
+            </motion.button>
+          )}
+        </AnimatePresence>
 
-      {/* Absolute bottom note */}
-      <div className="border-t border-zinc-800/50 py-4">
-        <p className="text-center text-xs text-zinc-600">
-          Built with Next.js, Tailwind CSS & Framer Motion • Deployed on Vercel
-        </p>
       </div>
     </footer>
   );
