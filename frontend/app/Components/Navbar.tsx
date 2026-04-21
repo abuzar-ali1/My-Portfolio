@@ -2,404 +2,292 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, Linkedin, Menu, X, ChevronRight, Sparkles, Target } from "lucide-react";
+import { Github, Linkedin, Menu, X, ChevronRight, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navLinks } from "../Data/data";
-
-
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("#about");
-  const [hoverLink, setHoverLink] = useState("#about");
+  const [hoverLink, setHoverLink] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const navbarRef = useRef<HTMLElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const isClickingRef = useRef(false);
 
-  // Handle scroll effect for navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(totalHeight > 0 ? window.scrollY / totalHeight : 0);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Initialize active link from URL on component mount
   useEffect(() => {
     const hash = window.location.hash || "#about";
     setActiveLink(hash);
-    setHoverLink(hash);
   }, []);
 
-  // Set up Intersection Observer for each section - IMPROVED VERSION
   useEffect(() => {
-    // Disconnect existing observer
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+    if (observerRef.current) observerRef.current.disconnect();
 
-    const options = {
-      root: null,
-      rootMargin: '-100px 0px -200px 0px', // Tighter margin for better detection
-      threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    };
-
-
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      if (isClickingRef.current) return;
-
-      for (const entry of entries) {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
-          const target = entry.target as HTMLElement;
-          const id = target.id;
-          const hash = `#${id}`;
-
-          if (hash !== activeLink) {
-            setActiveLink(hash);
-            setHoverLink(hash);
-
-            if (window.history.replaceState) {
-              window.history.replaceState(null, '', hash);
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (isClickingRef.current) return;
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+            const hash = `#${(entry.target as HTMLElement).id}`;
+            if (hash !== activeLink) {
+              setActiveLink(hash);
+              window.history.replaceState?.(null, "", hash);
             }
+            break;
           }
-          break; 
         }
-      }
-    };
+      },
+      { rootMargin: "-100px 0px -200px 0px", threshold: [0.1, 0.3, 0.5] }
+    );
 
-    // Create and store observer
-    observerRef.current = new IntersectionObserver(observerCallback, options);
-
-    // Observe each section
-    const observeSections = () => {
+    setTimeout(() => {
       navLinks.forEach((link) => {
-        const sectionId = link.href.replace('#', '');
-        const element = document.getElementById(sectionId);
-        if (element && observerRef.current) {
-          observerRef.current.observe(element);
-        }
+        const el = document.getElementById(link.href.replace("#", ""));
+        if (el && observerRef.current) observerRef.current.observe(el);
       });
-    };
+    }, 100);
 
-    // Small delay to ensure sections are rendered
-    setTimeout(observeSections, 100);
-
-    // Cleanup
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
+    return () => observerRef.current?.disconnect();
   }, []);
 
-  // Handle smooth scroll to section - FIXED FOR SINGLE CLICK
   const scrollToSection = async (href: string) => {
-    const sectionId = href.replace('#', '');
-    const element = document.getElementById(sectionId);
-
-    if (element) {
-      // Set clicking flag to prevent observer updates
-      isClickingRef.current = true;
-
-      // Close mobile menu if open
-      setMobileMenuOpen(false);
-
-      // Update active and hover links immediately
-      setActiveLink(href);
-      setHoverLink(href);
-
-      // Small delay to ensure mobile menu closes
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Calculate navbar height
-      let navbarHeight = 80; // Default desktop height
-
-      if (navbarRef.current) {
-        const navRect = navbarRef.current.getBoundingClientRect();
-        navbarHeight = navRect.height;
-      }
-
-      // Get element position
-      const elementTop = element.offsetTop;
-      const scrollPosition = elementTop - navbarHeight;
-
-      // Smooth scroll
-      window.scrollTo({
-        top: scrollPosition,
-        behavior: 'smooth'
-      });
-
-      // Update URL
-      if (window.history.pushState) {
-        window.history.pushState(null, '', href);
-      }
-
-      // Reset clicking flag after scroll completes
-      setTimeout(() => {
-        isClickingRef.current = false;
-      }, 1000);
-    }
+    const el = document.getElementById(href.replace("#", ""));
+    if (!el) return;
+    isClickingRef.current = true;
+    setMobileMenuOpen(false);
+    setActiveLink(href);
+    await new Promise((r) => setTimeout(r, 100));
+    const navH = navbarRef.current?.getBoundingClientRect().height ?? 72;
+    window.scrollTo({ top: el.offsetTop - navH, behavior: "smooth" });
+    window.history.pushState?.(null, "", href);
+    setTimeout(() => { isClickingRef.current = false; }, 1000);
   };
 
-  // Handle scroll on link click - DESKTOP
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     scrollToSection(href);
   };
 
-  // Handle scroll on link click - MOBILE (SINGLE CLICK)
-  const handleMobileLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    scrollToSection(href);
-  };
-
-  // Handle mobile menu toggle
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: -20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
-  };
-
   return (
-    <motion.nav
-      ref={navbarRef}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300",
-        isScrolled
-          ? "py-4 bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-800/50"
-          : "py-6 bg-gradient-to-b from-zinc-900/80 to-transparent"
-      )}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+    <>
+      {/* Scroll Progress Bar */}
+      <div
+        className="fixed top-0 left-0 z-[60] h-[2px] bg-[#00d4ff] transition-all duration-100 shadow-[0_0_8px_#00d4ff80]"
+        style={{ width: `${scrollProgress * 100}%` }}
+      />
 
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            whileHover={{ scale: 1.02 }}
-            className="group cursor-pointer"
-            onClick={() => scrollToSection('#about')}
-          >
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center border border-zinc-600/50 group-hover:border-zinc-500 transition-colors">
-                  <Sparkles className="w-4 h-4 text-zinc-300 group-hover:text-zinc-100 transition-colors" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-zinc-100 tracking-tight">
-                  Abuzar Ali
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-300 to-zinc-400 ml-1">
-                    .DEV
-                  </span>
-                </h1>
-                <p className="text-xs text-zinc-500">Frontend Developer</p>
-              </div>
-            </div>
-          </motion.div>
+      <motion.nav
+        ref={navbarRef}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className={cn(
+          "fixed top-0 w-full z-50 transition-all duration-300",
+          isScrolled
+            ? "bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/[0.06]"
+            : "bg-transparent"
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 lg:h-[72px]">
 
-          {/* Desktop Navigation */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={cn(
-              "hidden md:flex items-center gap-1 px-3 py-2 rounded-full transition-all duration-500 border",
-              isScrolled
-                ? "bg-zinc-800/30 backdrop-blur-md border-zinc-700/50 shadow-lg shadow-black/20"
-                : "bg-zinc-900/30 backdrop-blur-sm border-zinc-600/30"
-            )}
-          >
-            {navLinks.map((link) => {
-              return (
-                <motion.a
-                  key={link.name}
-                  href={link.href}
-                  onMouseEnter={() => setHoverLink(link.href)}
-                  onMouseLeave={() => setHoverLink(activeLink)}
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                  className={cn(
-                    "relative px-4 py-2 text-sm font-medium transition-colors rounded-full flex items-center gap-2",
-                    activeLink === link.href
-                      ? "text-zinc-100 bg-zinc-800/50"
-                      : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/30"
-                  )}
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {link.name}
-                  {hoverLink === link.href && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute inset-0 rounded-full border border-zinc-500/50 -z-10"
-                    />
-                  )}
-                </motion.a>
-              );
-            })}
-          </motion.div>
-
-          {/* Right Side Actions */}
-          <div className="hidden md:flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <motion.a
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                href="https://github.com/abuzar-ali1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300 transition-colors"
-              >
-                <Github className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                whileHover={{ y: -2, scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                href="https://www.linkedin.com/in/abuzar-ali01/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-blue-400 transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </motion.a>
-            </div>
-
-            <motion.button
-              onClick={() => scrollToSection('#contact')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-slate-700 to-slate-800 text-zinc-100 font-semibold text-sm hover:from-slate-600 hover:to-slate-700 transition-all border border-slate-600/50 hover:border-slate-500/50 shadow-lg shadow-slate-900/30"
+            {/* ── Logo ── */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="group cursor-pointer flex items-center gap-3"
+              onClick={() => scrollToSection("#about")}
             >
-              Hire Me
+              {/* Terminal icon box */}
+              <div className="relative w-8 h-8 border border-[#00d4ff]/40 group-hover:border-[#00d4ff] transition-colors duration-300 flex items-center justify-center">
+                <Terminal className="w-4 h-4 text-[#00d4ff]" />
+                {/* corner brackets */}
+                <span className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t border-l border-[#00d4ff]" />
+                <span className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b border-r border-[#00d4ff]" />
+              </div>
+
+              <div>
+                <p className="text-[15px] font-semibold text-white leading-none tracking-wide font-mono">
+                  AbuZar<span className="text-[#00d4ff]">.dev</span>
+                </p>
+                <p className="text-[10px] text-white/30 font-mono mt-0.5 tracking-widest uppercase">
+                  Full Stack Developer
+                </p>
+              </div>
+            </motion.div>
+
+            {/* ── Desktop Nav ── */}
+            <div className="hidden md:flex items-center gap-1">
+              {navLinks.map((link) => {
+                const isActive = activeLink === link.href;
+                const isHover = hoverLink === link.href;
+                return (
+                  <motion.a
+                    key={link.name}
+                    href={link.href}
+                    onMouseEnter={() => setHoverLink(link.href)}
+                    onMouseLeave={() => setHoverLink(null)}
+                    onClick={(e) => handleLinkClick(e, link.href)}
+                    whileTap={{ scale: 0.95 }}
+                    className={cn(
+                      "relative px-4 py-2 text-[13px] font-mono tracking-wide transition-colors duration-200 select-none",
+                      isActive
+                        ? "text-[#00d4ff]"
+                        : "text-white/40 hover:text-white/80"
+                    )}
+                  >
+                    {/* Hover / active underline */}
+                    <AnimatePresence>
+                      {(isActive || isHover) && (
+                        <motion.span
+                          layoutId="navUnderline"
+                          className="absolute bottom-0 left-4 right-4 h-[1px] bg-[#00d4ff]"
+                          initial={{ scaleX: 0, opacity: 0 }}
+                          animate={{ scaleX: 1, opacity: 1 }}
+                          exit={{ scaleX: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                        />
+                      )}
+                    </AnimatePresence>
+
+                    {/* Active dot */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeDot"
+                        className="absolute top-1.5 right-1.5 w-1 h-1 rounded-full bg-[#00d4ff]"
+                      />
+                    )}
+
+                    {link.name}
+                  </motion.a>
+                );
+              })}
+            </div>
+
+            {/* ── Right Actions ── */}
+            <div className="hidden md:flex items-center gap-3">
+              {/* Social icons */}
+              <div className="flex items-center gap-1.5 pr-3 border-r border-white/[0.08]">
+                <motion.a
+                  whileHover={{ y: -2 }}
+                  href="https://github.com/abuzar-ali1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-white/30 hover:text-white/80 transition-colors"
+                >
+                  <Github className="w-4 h-4" />
+                </motion.a>
+                <motion.a
+                  whileHover={{ y: -2 }}
+                  href="https://www.linkedin.com/in/abuzar-ali01/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-white/30 hover:text-[#00d4ff] transition-colors"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </motion.a>
+              </div>
+
+              {/* Hire Me — sharp rectangle, not pill */}
+              <motion.button
+                onClick={() => scrollToSection("#contact")}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="relative group px-5 py-2 border border-[#00d4ff]/50 text-[#00d4ff] font-mono text-[12px] tracking-widest uppercase overflow-hidden transition-colors duration-300 hover:border-[#00d4ff]"
+              >
+                {/* fill on hover */}
+                <span className="absolute inset-0 bg-[#00d4ff]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative">Hire Me</span>
+              </motion.button>
+            </div>
+
+            {/* ── Mobile Toggle ── */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className="md:hidden p-2 border border-white/10 text-white/40 hover:text-white hover:border-white/20 transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <AnimatePresence mode="wait">
+                {mobileMenuOpen ? (
+                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+                    <X className="w-5 h-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
+                    <Menu className="w-5 h-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.button>
           </div>
-
-          {/* Mobile Menu Toggle */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            className="md:hidden p-2.5 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
-            onClick={handleMobileMenuToggle}
-          >
-            <AnimatePresence mode="wait">
-              {mobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                >
-                  <X className="w-6 h-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                >
-                  <Menu className="w-6 h-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* ── Mobile Menu ── */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden overflow-hidden mt-4"
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="md:hidden overflow-hidden border-t border-white/[0.06] bg-[#0a0a0a]/98 backdrop-blur-xl"
             >
-              <div className="py-4 px-4 rounded-xl bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/50 shadow-2xl shadow-black/40">
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="space-y-1"
-                >
-                  {navLinks.map((link, index) => (
+              <div className="px-4 py-4 space-y-1">
+                {navLinks.map((link, i) => {
+                  const isActive = activeLink === link.href;
+                  return (
                     <motion.a
                       key={link.name}
                       href={link.href}
-                      onClick={(e) => handleMobileLinkClick(e, link.href)}
-                      variants={itemVariants}
+                      initial={{ x: -16, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                       className={cn(
-                        "flex items-center justify-between py-3 px-4 text-base font-medium rounded-lg transition-colors group cursor-pointer",
-                        activeLink === link.href
-                          ? "text-zinc-100 bg-zinc-800/50"
-                          : "text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800/50"
+                        "flex items-center justify-between py-3 px-4 border-l-2 font-mono text-[13px] tracking-wide transition-all",
+                        isActive
+                          ? "border-[#00d4ff] text-[#00d4ff] bg-[#00d4ff]/5"
+                          : "border-transparent text-white/40 hover:text-white/80 hover:border-white/20"
                       )}
                     >
                       <span>{link.name}</span>
-                      <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                      <ChevronRight className="w-3.5 h-3.5 opacity-50" />
                     </motion.a>
-                  ))}
-                </motion.div>
+                  );
+                })}
+              </div>
 
-                {/* Mobile Social & CTA */}
-                <div className="flex items-center justify-center gap-4 pt-6 mt-6 border-t border-zinc-800">
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    href="https://github.com/abuzar-ali1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-zinc-300"
-                  >
-                    <Github className="w-5 h-5" />
-                  </motion.a>
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    href="https://www.linkedin.com/in/abuzar-ali01/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 text-zinc-400 hover:text-blue-600"
-                  >
-                    <Linkedin className="w-5 h-5" />
-                  </motion.a>
-                  <motion.button
-                    onClick={() => scrollToSection('#contact')}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-5 py-2.5 rounded-full bg-gradient-to-r from-slate-700 to-slate-800 text-zinc-100 font-semibold text-sm"
-                  >
-                    Hire Me
-                  </motion.button>
+              {/* Mobile bottom bar */}
+              <div className="flex items-center justify-between px-8 py-4 border-t border-white/[0.06]">
+                <div className="flex items-center gap-4">
+                  <a href="https://github.com/abuzar-ali1" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors">
+                    <Github className="w-4 h-4" />
+                  </a>
+                  <a href="https://www.linkedin.com/in/abuzar-ali01/" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-[#00d4ff] transition-colors">
+                    <Linkedin className="w-4 h-4" />
+                  </a>
                 </div>
+                <button
+                  onClick={() => scrollToSection("#contact")}
+                  className="px-5 py-2 border border-[#00d4ff]/50 text-[#00d4ff] font-mono text-[11px] tracking-widest uppercase"
+                >
+                  Hire Me
+                </button>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Scroll Progress Indicator */}
-      <motion.div
-        className="h-[1px] bg-gradient-to-r from-transparent via-zinc-600 to-transparent"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: isScrolled ? 1 : 0 }}
-        style={{ originX: 0 }}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.nav>
+      </motion.nav>
+    </>
   );
 }
