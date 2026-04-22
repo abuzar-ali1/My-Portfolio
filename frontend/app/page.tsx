@@ -14,8 +14,8 @@ export default async function Home() {
       <AboutHero />
       <ProjectGrid />
       <Skills />
-      <Contact />
       <Background/>
+      <Contact />
      
     </>
   );

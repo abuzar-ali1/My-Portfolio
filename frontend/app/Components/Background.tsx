@@ -46,7 +46,7 @@ export default function Background() {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0077B5]/10 text-[#0077B5] mb-6">
             <Sparkles className="w-3.5 h-3.5" />
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-bold">
+            <span className=" text-[10px] tracking-[0.2em] uppercase font-bold">
               04 / development_history
             </span>
           </div>
@@ -112,7 +112,7 @@ export default function Background() {
                       </div>
 
                       <div className="flex flex-col md:items-end">
-                        <span className="font-mono text-xs font-bold text-slate-900 bg-slate-50 px-3 py-1 rounded-lg">
+                        <span className=" text-xs font-bold text-slate-900 bg-slate-50 px-3 py-1 rounded-lg">
                           {item.year}
                         </span>
                         {item.status && (

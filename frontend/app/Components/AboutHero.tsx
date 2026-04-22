@@ -83,7 +83,7 @@ export default function AboutHero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[11px] font-medium text-slate-600 uppercase tracking-wider font-sans">
+              <span className="text-[11px] font-medium text-slate-600 uppercase tracking-wider ">
                 Available for Internship • {CONTACT_INFO.location}
               </span>
             </motion.div>
@@ -95,7 +95,7 @@ export default function AboutHero() {
               transition={{ delay: 0.1 }}
               className="mb-4"
             >
-              <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-slate-900 font-sans leading-[1.1]">
+              <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-slate-900  leading-[1.1]">
                 {name}
                 <motion.span
                   animate={{ opacity: [1, 0] }}
@@ -127,7 +127,7 @@ export default function AboutHero() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-slate-500 text-lg leading-relaxed mb-10 max-w-xl font-sans"
+              className="text-slate-500 text-lg leading-relaxed mb-10 max-w-xl "
             >
               Building the next generation of web applications. I specialize in 
               bridging the gap between robust <span className="text-slate-900 font-semibold">Backend Architecture</span> and 

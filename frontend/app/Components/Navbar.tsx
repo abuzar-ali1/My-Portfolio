@@ -126,7 +126,8 @@ export default function Navbar() {
                       "relative px-5 py-2 text-[13px] font-medium transition-all rounded-full",
                       isActive
                         ? "text-white shadow-sm"
-                        : "text-slate-500 hover:text-slate-900"
+                        : isScrolled                          ? "text-slate-700 hover:text-slate-900 hover:bg-slate-200"
+                        : "text-white hover:text-white hover:bg-[#0077B5]/80"
                     )}
                   >
                     {isActive && (

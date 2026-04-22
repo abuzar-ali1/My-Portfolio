@@ -51,7 +51,7 @@ export default function ProjectGrid() {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0077B5]/10 text-[#0077B5] mb-6">
                 <Layout className="w-3.5 h-3.5" />
-                <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-bold">
+                <span className=" text-[10px] tracking-[0.2em] uppercase font-bold">
                   02 / curated_work
                 </span>
               </div>
@@ -84,9 +84,9 @@ export default function ProjectGrid() {
               {/* Content Side */}
               <div className="p-8 md:p-14 flex flex-col justify-center">
                 <div className="flex items-center gap-4 mb-8">
-                  <span className="font-mono text-[11px] font-bold text-slate-300">01</span>
+                  <span className=" text-[11px] font-bold text-slate-300">01</span>
                   <div className="h-px w-8 bg-slate-100" />
-                  <span className="font-mono text-[10px] text-[#0077B5] tracking-widest uppercase font-bold">Featured Case Study</span>
+                  <span className=" text-[10px] text-[#0077B5] tracking-widest uppercase font-bold">Featured Case Study</span>
                 </div>
 
                 <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight group-hover:text-[#0077B5] transition-colors">
@@ -192,7 +192,7 @@ export default function ProjectGrid() {
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="font-mono text-[9px] font-bold text-slate-400 uppercase tracking-widest"
+                    className=" text-[9px] font-bold text-slate-400 uppercase tracking-widest"
                   >
                     {t}
                   </span>
@@ -209,7 +209,7 @@ export default function ProjectGrid() {
           viewport={{ once: true }}
           className="mt-20 flex flex-col items-center text-center gap-6 pt-12 border-t border-slate-100"
         >
-          <p className="font-sans text-sm text-slate-400 font-medium">
+          <p className=" text-sm text-slate-400 font-medium">
             Explore more repositories on{" "}
             <a
               href="https://github.com/abuzar-ali1"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ReactLenis from "lenis/react";
+import { Roboto } from 'next/font/google';
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 
@@ -14,6 +15,14 @@ export const metadata: Metadata = {
   },
 };
 
+
+const roboto = Roboto({
+  weight: ['300', '400', '500', '700', '900'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-roboto',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="antialiased"
+        className={`${roboto.variable} antialiased` }
       >
         <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
           <Navbar />

@@ -58,32 +58,23 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#FAFAFA] border-t border-slate-200 overflow-hidden">
+    <footer className="relative bg-[#0077B5]/[0.02] border-t border-slate-200 overflow-hidden">
       
-      {/* ── Background Technical Grid ── */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none">
-        <defs>
-          <pattern id="footer-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0077B5" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#footer-grid)" />
-      </svg>
+    
       
       {/* Subtle Blue Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#0077B5]/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         
         {/* ── Environment Status Bar ── */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-16 pb-8 border-b border-slate-200">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shadow-lg">
+            <div className="w-8 h-8 rounded-lg bg-[#0077B5] flex items-center justify-center shadow-lg">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-900 tracking-tight">Abuzar Ali Portfolio</p>
-              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest font-bold">Release v3.0.2</p>
+              <p className="text-sm font-bold tracking-tight">Abuzar Ali Portfolio</p>
+              <p className="text-[10px]  text-slate-400 uppercase tracking-widest font-bold">Last Updated at May 2026</p>
             </div>
           </div>
           
@@ -111,7 +102,7 @@ export default function Footer() {
             </p>
             
             <div className="flex items-center gap-3 pt-4">
-              <a href={CONTACT_INFO.github} target="_blank" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-all shadow-sm">
+              <a href={CONTACT_INFO.github} target="_blank" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#0077B5] hover:border-[#0077B5] transition-all shadow-sm">
                 <Github className="w-4 h-4" />
               </a>
               <a href={CONTACT_INFO.linkedin} target="_blank" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#0077B5] hover:border-[#0077B5] transition-all shadow-sm">

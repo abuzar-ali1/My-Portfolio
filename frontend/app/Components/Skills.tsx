@@ -134,7 +134,7 @@ export default function Skills() {
           className="mb-16"
         >
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-mono text-[10px] text-[#0077B5] font-bold tracking-[0.2em] uppercase">
+            <span className="text-[10px] text-[#0077B5] font-bold tracking-[0.2em] uppercase">
               03 / technical_stack
             </span>
             <div className="flex-1 h-px bg-slate-200" />
@@ -227,13 +227,13 @@ export default function Skills() {
                             {skill.name}
                           </p>
                           <span className={cn(
-                            "px-2.5 py-1 rounded-lg font-mono text-[9px] font-bold uppercase tracking-widest",
+                            "px-2.5 py-1 rounded-lg  text-[9px] font-bold uppercase tracking-widest",
                             style.bg, style.text
                           )}>
                             {skill.tier}
-                          </span>
+                          </span> 
                         </div>
-                        <p className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
+                        <p className="text-[11px]  uppercase tracking-widest text-slate-400">
                           {skill.note}
                         </p>
                       </motion.div>

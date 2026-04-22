@@ -85,7 +85,7 @@ export default function Contact() {
           className="mb-20"
         >
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-mono text-[10px] text-[#0077B5] font-bold tracking-[0.2em] uppercase">
+            <span className=" text-[10px] text-[#0077B5] font-bold tracking-[0.2em] uppercase">
               05 / start_conversation
             </span>
             <div className="flex-1 h-px bg-slate-200" />
