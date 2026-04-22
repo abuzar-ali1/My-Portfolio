@@ -105,7 +105,7 @@ export default function Background() {
                         )}>
                           {item.type}
                         </div>
-                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 group-hover:text-[#0077B5] transition-colors">
+                        <h3 style={{"color" : "#303030"}} className="text-xl md:text-2xl font-bold group-hover:text-[#0077B5] transition-colors">
                           {item.title}
                         </h3>
                         <p className="text-slate-400 font-medium text-sm mt-1">{item.institution}</p>
@@ -143,7 +143,7 @@ export default function Background() {
                     {isEdu && item.status?.includes("In Progress") && (
                       <div className="mb-6 p-5 rounded-2xl bg-slate-50 border border-slate-100">
                         <div className="flex justify-between items-center mb-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                          <span>Curriculum Completion</span>
+                          <span>   Completion</span>
                           <span className="text-slate-900">25%</span>
                         </div>
                         <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">

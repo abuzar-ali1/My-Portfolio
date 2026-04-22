@@ -115,7 +115,7 @@ export const TIMELINE = [
     title: "BS Computer Science",
     institution: "Allama Iqbal Open University",
     description:
-      "Currently pursuing (2nd Semester). Focus on Data Structures and Software Engineering.",
+      "Currently pursuing (3rd Semester). Focus on Data Structures and Software Engineering.",
     type: "education",
     icon: GraduationCap,
     status: "In Progress (3.3 GPA)",

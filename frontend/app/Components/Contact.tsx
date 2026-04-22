@@ -249,17 +249,6 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Footer Note */}
-        <div className="mt-24 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-slate-400 text-xs font-medium uppercase tracking-widest">
-            © {new Date().getFullYear()} Abuzar Ali · Software Engineering Lifecycle
-          </p>
-          <div className="flex gap-6 text-slate-300 text-xs font-bold uppercase tracking-widest">
-            <span>Next.js</span>
-            <span>Django</span>
-            <span>PostgreSQL</span>
-          </div>
-        </div>
       </div>
     </section>
   );

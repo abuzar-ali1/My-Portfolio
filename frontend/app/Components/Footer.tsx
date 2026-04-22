@@ -18,8 +18,8 @@ const footerLinks = [
   {
     title: "External Connect",
     links: [
-      { name: "GitHub Repository", href: CONTACT_INFO.github, icon: Github },
-      { name: "LinkedIn Profile", href: CONTACT_INFO.linkedin, icon: Linkedin },
+      { name: "GitHub", href: CONTACT_INFO.github, icon: Github },
+      { name: "LinkedIn", href: CONTACT_INFO.linkedin, icon: Linkedin },
       { name: "X / Twitter", href: CONTACT_INFO.twitter, icon: Twitter },
       { name: "Tech Articles", href: "#", icon: ExternalLink },
     ]
@@ -172,7 +172,7 @@ export default function Footer() {
           </div>
 
           <p className="text-[10px] font-mono text-slate-300 uppercase tracking-widest">
-            LATENCY: 24MS · SECURE_HANDSHAKE: OK
+            Next.js · Django . PostgreSQL
           </p>
         </motion.div>
 

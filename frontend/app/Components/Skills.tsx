@@ -206,7 +206,7 @@ export default function Skills() {
                 transition={{ duration: 0.3 }}
               >
                 <div className="mb-10">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-2">{activeCategory.label}</h3>
+                  <h3 style={{"color" : "#303030"}} className="text-2xl font-bold font-boldmb-2">{activeCategory.label}</h3>
                   <p className="text-slate-500 text-base">{activeCategory.description}</p>
                 </div>
 
