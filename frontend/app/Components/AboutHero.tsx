@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code, ArrowRight, FileText, Globe, Layers, Zap, Sparkles } from "lucide-react";
+import { Code, ArrowRight, FileText, Globe, Layers, Zap, Sparkles, Phone } from "lucide-react";
 import Image from "next/image";
 import profilePic from "./../../public/Images/my_profile.png";
 import { CONTACT_INFO, QUICK_STATS, roles } from "../Data/data";
+import Contact from "./Contact";
 
 // Typewriter hook for the name
 function useTypewriter(text: string, speed = 80, pause = 3000) {
@@ -157,10 +158,10 @@ export default function AboutHero() {
 
               <a
                 href="#contact"
-                className="px-8 py-3.5 border border-slate-200 text-slate-600 rounded-full font-semibold text-sm hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2"
+                className="px-8 py-3.5 border border-slate-200 text-slate-600 rounded-full font-semibold text-sm hover:text-white hover:bg-[#030303] hover:border-slate-300 transition-all flex items-center gap-2"
               >
-                <FileText className="w-4 h-4" />
-                Get Resume
+                <Phone className="w-4 h-4" />
+                Let's Talk......
               </a>
             </motion.div>
           </div>
