@@ -5,6 +5,7 @@ import Education from "./Components/Education";
 import AboutHero from "./Components/AboutHero";
 import ProjectGrid from "./Components/ProjectGrid";
 import Skills from "./Components/Skills";
+import Background from "./Components/Background";
 
 export default async function Home() {
 
@@ -13,7 +14,8 @@ export default async function Home() {
       <AboutHero />
       <ProjectGrid />
       <Skills />
-      {/* <Contact /> */}
+      <Contact />
+      <Background/>
      
     </>
   );
