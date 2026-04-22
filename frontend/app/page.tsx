@@ -13,10 +13,8 @@ export default async function Home() {
       <AboutHero />
       <ProjectGrid />
       <Skills />
-      <Contact />
-      <Certifications />
-      <Achievements />
-      <Education />
+      {/* <Contact /> */}
+     
     </>
   );
 }

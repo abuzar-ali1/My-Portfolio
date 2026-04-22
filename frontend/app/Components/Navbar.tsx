@@ -2,15 +2,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, Linkedin, Menu, X, ChevronRight, Terminal } from "lucide-react";
+import { Github, Linkedin, Menu, X, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { navLinks } from "../Data/data";
+import { NAV_LINKS, CONTACT_INFO } from "../Data/data";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("#about");
-  const [hoverLink, setHoverLink] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const navbarRef = useRef<HTMLElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -52,14 +51,14 @@ export default function Navbar() {
     );
 
     setTimeout(() => {
-      navLinks.forEach((link) => {
+      NAV_LINKS.forEach((link) => {
         const el = document.getElementById(link.href.replace("#", ""));
         if (el && observerRef.current) observerRef.current.observe(el);
       });
     }, 100);
 
     return () => observerRef.current?.disconnect();
-  }, []);
+  }, [activeLink]);
 
   const scrollToSection = async (href: string) => {
     const el = document.getElementById(href.replace("#", ""));
@@ -67,23 +66,18 @@ export default function Navbar() {
     isClickingRef.current = true;
     setMobileMenuOpen(false);
     setActiveLink(href);
-    await new Promise((r) => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, 50));
     const navH = navbarRef.current?.getBoundingClientRect().height ?? 72;
     window.scrollTo({ top: el.offsetTop - navH, behavior: "smooth" });
     window.history.pushState?.(null, "", href);
     setTimeout(() => { isClickingRef.current = false; }, 1000);
   };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    scrollToSection(href);
-  };
-
   return (
     <>
-      {/* Scroll Progress Bar */}
+      {/* ── Suble Progress Bar ── */}
       <div
-        className="fixed top-0 left-0 z-[60] h-[2px] bg-[#00d4ff] transition-all duration-100 shadow-[0_0_8px_#00d4ff80]"
+        className="fixed top-0 left-0 z-[60] h-[3px] bg-[#0077B5] transition-all duration-150"
         style={{ width: `${scrollProgress * 100}%` }}
       />
 
@@ -91,144 +85,89 @@ export default function Navbar() {
         ref={navbarRef}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
           "fixed top-0 w-full z-50 transition-all duration-300",
           isScrolled
-            ? "bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/[0.06]"
-            : "bg-transparent"
+            ? "bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm py-2"
+            : "bg-transparent py-4"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 lg:h-[72px]">
+          <div className="flex justify-between items-center h-14">
 
             {/* ── Logo ── */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="group cursor-pointer flex items-center gap-3"
+            <div 
+              className="flex items-center gap-2 cursor-pointer group"
               onClick={() => scrollToSection("#about")}
             >
-              {/* Terminal icon box */}
-              <div className="relative w-8 h-8 border border-[#00d4ff]/40 group-hover:border-[#00d4ff] transition-colors duration-300 flex items-center justify-center">
-                <Terminal className="w-4 h-4 text-[#00d4ff]" />
-                {/* corner brackets */}
-                <span className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t border-l border-[#00d4ff]" />
-                <span className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b border-r border-[#00d4ff]" />
+              <div className="w-9 h-9 rounded-xl bg-[#0077B5] flex items-center justify-center shadow-lg shadow-[#0077B5]/20 group-hover:scale-105 transition-transform">
+                <Sparkles className="w-5 h-5 text-white" />
               </div>
-
               <div>
-                <p className="text-[15px] font-semibold text-white leading-none tracking-wide font-mono">
-                  AbuZar<span className="text-[#00d4ff]">.dev</span>
-                </p>
-                <p className="text-[10px] text-white/30 font-mono mt-0.5 tracking-widest uppercase">
-                  Full Stack Developer
-                </p>
+                <span className="text-lg font-bold text-slate-900 tracking-tight block leading-none">
+                  Abuzar<span className="text-[#0077B5]"> Ali</span>
+                </span>
+                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+                  Software Engineer
+                </span>
               </div>
-            </motion.div>
+            </div>
 
-            {/* ── Desktop Nav ── */}
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => {
+            {/* ── Desktop Navigation ── */}
+            <div className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-full border border-slate-200/50">
+              {NAV_LINKS.map((link) => {
                 const isActive = activeLink === link.href;
-                const isHover = hoverLink === link.href;
                 return (
-                  <motion.a
+                  <button
                     key={link.name}
-                    href={link.href}
-                    onMouseEnter={() => setHoverLink(link.href)}
-                    onMouseLeave={() => setHoverLink(null)}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    whileTap={{ scale: 0.95 }}
+                    onClick={() => scrollToSection(link.href)}
                     className={cn(
-                      "relative px-4 py-2 text-[13px] font-mono tracking-wide transition-colors duration-200 select-none",
+                      "relative px-5 py-2 text-[13px] font-medium transition-all rounded-full",
                       isActive
-                        ? "text-[#00d4ff]"
-                        : "text-white/40 hover:text-white/80"
+                        ? "text-white shadow-sm"
+                        : "text-slate-500 hover:text-slate-900"
                     )}
                   >
-                    {/* Hover / active underline */}
-                    <AnimatePresence>
-                      {(isActive || isHover) && (
-                        <motion.span
-                          layoutId="navUnderline"
-                          className="absolute bottom-0 left-4 right-4 h-[1px] bg-[#00d4ff]"
-                          initial={{ scaleX: 0, opacity: 0 }}
-                          animate={{ scaleX: 1, opacity: 1 }}
-                          exit={{ scaleX: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                        />
-                      )}
-                    </AnimatePresence>
-
-                    {/* Active dot */}
                     {isActive && (
-                      <motion.span
-                        layoutId="activeDot"
-                        className="absolute top-1.5 right-1.5 w-1 h-1 rounded-full bg-[#00d4ff]"
+                      <motion.div
+                        layoutId="navPill"
+                        className="absolute inset-0 bg-[#0077B5] rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
-
                     {link.name}
-                  </motion.a>
+                  </button>
                 );
               })}
             </div>
 
-            {/* ── Right Actions ── */}
-            <div className="hidden md:flex items-center gap-3">
-              {/* Social icons */}
-              <div className="flex items-center gap-1.5 pr-3 border-r border-white/[0.08]">
-                <motion.a
-                  whileHover={{ y: -2 }}
-                  href="https://github.com/abuzar-ali1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 text-white/30 hover:text-white/80 transition-colors"
-                >
+            {/* ── Socials & CTA ── */}
+            <div className="hidden md:flex items-center gap-4">
+              <div className="flex items-center gap-1 border-r border-slate-200 pr-4">
+                <a href={CONTACT_INFO.github} target="_blank" className="p-2 text-slate-400 hover:text-slate-900 transition-colors">
                   <Github className="w-4 h-4" />
-                </motion.a>
-                <motion.a
-                  whileHover={{ y: -2 }}
-                  href="https://www.linkedin.com/in/abuzar-ali01/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 text-white/30 hover:text-[#00d4ff] transition-colors"
-                >
+                </a>
+                <a href={CONTACT_INFO.linkedin} target="_blank" className="p-2 text-slate-400 hover:text-[#0077B5] transition-colors">
                   <Linkedin className="w-4 h-4" />
-                </motion.a>
+                </a>
               </div>
 
-              {/* Hire Me — sharp rectangle, not pill */}
-              <motion.button
+              <button
                 onClick={() => scrollToSection("#contact")}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                className="relative group px-5 py-2 border border-[#00d4ff]/50 text-[#00d4ff] font-mono text-[12px] tracking-widest uppercase overflow-hidden transition-colors duration-300 hover:border-[#00d4ff]"
+                className="px-6 py-2 bg-slate-900 text-white rounded-full text-[13px] font-semibold hover:bg-slate-800 transition-all active:scale-95"
               >
-                {/* fill on hover */}
-                <span className="absolute inset-0 bg-[#00d4ff]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative">Hire Me</span>
-              </motion.button>
+                Let's Talk
+              </button>
             </div>
 
-            {/* ── Mobile Toggle ── */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              className="md:hidden p-2 border border-white/10 text-white/40 hover:text-white hover:border-white/20 transition-colors"
+            {/* ── Mobile Menu Toggle ── */}
+            <button
+              className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <AnimatePresence mode="wait">
-                {mobileMenuOpen ? (
-                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-                    <X className="w-5 h-5" />
-                  </motion.div>
-                ) : (
-                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-                    <Menu className="w-5 h-5" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
 
@@ -236,50 +175,36 @@ export default function Navbar() {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden border-t border-white/[0.06] bg-[#0a0a0a]/98 backdrop-blur-xl"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-xl md:hidden"
             >
-              <div className="px-4 py-4 space-y-1">
-                {navLinks.map((link, i) => {
-                  const isActive = activeLink === link.href;
-                  return (
-                    <motion.a
-                      key={link.name}
-                      href={link.href}
-                      initial={{ x: -16, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: i * 0.05 }}
-                      onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
-                      className={cn(
-                        "flex items-center justify-between py-3 px-4 border-l-2 font-mono text-[13px] tracking-wide transition-all",
-                        isActive
-                          ? "border-[#00d4ff] text-[#00d4ff] bg-[#00d4ff]/5"
-                          : "border-transparent text-white/40 hover:text-white/80 hover:border-white/20"
-                      )}
-                    >
-                      <span>{link.name}</span>
-                      <ChevronRight className="w-3.5 h-3.5 opacity-50" />
-                    </motion.a>
-                  );
-                })}
+              <div className="p-4 space-y-1">
+                {NAV_LINKS.map((link) => (
+                  <button
+                    key={link.name}
+                    onClick={() => scrollToSection(link.href)}
+                    className={cn(
+                      "w-full flex items-center justify-between p-4 rounded-xl text-sm font-medium transition-colors",
+                      activeLink === link.href 
+                        ? "bg-[#0077B5]/10 text-[#0077B5]" 
+                        : "text-slate-600 hover:bg-slate-50"
+                    )}
+                  >
+                    {link.name}
+                    <ChevronRight className={cn("w-4 h-4 transition-transform", activeLink === link.href && "rotate-90")} />
+                  </button>
+                ))}
               </div>
-
-              {/* Mobile bottom bar */}
-              <div className="flex items-center justify-between px-8 py-4 border-t border-white/[0.06]">
-                <div className="flex items-center gap-4">
-                  <a href="https://github.com/abuzar-ali1" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors">
-                    <Github className="w-4 h-4" />
-                  </a>
-                  <a href="https://www.linkedin.com/in/abuzar-ali01/" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-[#00d4ff] transition-colors">
-                    <Linkedin className="w-4 h-4" />
-                  </a>
+              <div className="p-6 bg-slate-50 flex items-center justify-between">
+                <div className="flex gap-4">
+                  <a href={CONTACT_INFO.github} className="text-slate-400 hover:text-slate-900"><Github className="w-5 h-5" /></a>
+                  <a href={CONTACT_INFO.linkedin} className="text-slate-400 hover:text-[#0077B5]"><Linkedin className="w-5 h-5" /></a>
                 </div>
                 <button
                   onClick={() => scrollToSection("#contact")}
-                  className="px-5 py-2 border border-[#00d4ff]/50 text-[#00d4ff] font-mono text-[11px] tracking-widest uppercase"
+                  className="px-6 py-2 bg-[#0077B5] text-white rounded-full text-sm font-bold shadow-lg shadow-[#0077B5]/20"
                 >
                   Hire Me
                 </button>
