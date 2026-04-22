@@ -105,11 +105,11 @@ export default function Navbar() {
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="text-lg font-bold text-slate-900 tracking-tight block leading-none">
+                <span className={cn("text-lg font-bold tracking-tight block leading-none" , isScrolled ? "text-slate-900" : "text-white")}>
                   Abuzar<span className="text-[#0077B5]"> Ali</span>
                 </span>
                 <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
-                  Software Engineer
+                  Full Stack Developer
                 </span>
               </div>
             </div>

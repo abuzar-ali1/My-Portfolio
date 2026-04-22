@@ -5,45 +5,33 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Heart, Coffee, Copyright, ArrowUp, 
   Mail, Github, Linkedin, Twitter, 
-  MapPin, Phone, ExternalLink, Terminal, ShieldCheck
+  MapPin, Phone, ExternalLink, Sparkles, ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
+import { NAV_LINKS, CONTACT_INFO } from "../Data/data";
 
 const footerLinks = [
   {
-    title: "// navigation",
+    title: "Project Navigation",
+    links: NAV_LINKS
+  },
+  {
+    title: "External Connect",
     links: [
-      { name: "Home", href: "#home" },
-      { name: "Projects", href: "#projects" },
-      { name: "Skills", href: "#skills" },
-      { name: "Certifications", href: "#certifications" },
-      { name: "Achievements", href: "#achievements" },
-      { name: "Contact", href: "#contact" },
+      { name: "GitHub Repository", href: CONTACT_INFO.github, icon: Github },
+      { name: "LinkedIn Profile", href: CONTACT_INFO.linkedin, icon: Linkedin },
+      { name: "X / Twitter", href: CONTACT_INFO.twitter, icon: Twitter },
+      { name: "Tech Articles", href: "#", icon: ExternalLink },
     ]
   },
   {
-    title: "// external_resources",
-    links: [
-      { name: "GitHub", href: "https://github.com/abuzar-ali1", icon: Github },
-      { name: "LinkedIn", href: "https://www.linkedin.com/in/abuzar-ali01", icon: Linkedin },
-      { name: "Twitter", href: "https://x.com/Abu_zar_Ali", icon: Twitter },
-      { name: "Dev Blog", href: "#", icon: ExternalLink },
-    ]
-  },
-  {
-    title: "// system_legal",
+    title: "System Protocols",
     links: [
       { name: "Privacy Policy", href: "#" },
-      { name: "Terms of Service", href: "#" },
-      { name: "Cookie Protocol", href: "#" },
+      { name: "Security Standards", href: "#" },
+      { name: "Cookie Architecture", href: "#" },
     ]
   }
-];
-
-const contactInfo = [
-  { icon: Mail, text: "abuzarali.dev@gmail.com", href: "mailto:abuzarali.dev@gmail.com" },
-  { icon: Phone, text: "Secure Line", href: "#" },
-  { icon: MapPin, text: "Lahore, Pakistan", href: "#" },
 ];
 
 export default function Footer() {
@@ -65,75 +53,77 @@ export default function Footer() {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1, y: 0,
-      transition: { delay: i * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+      transition: { delay: i * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }
     })
   };
 
   return (
-    <footer className="relative bg-[#050505] border-t border-white/[0.05] overflow-hidden">
+    <footer className="relative bg-[#FAFAFA] border-t border-slate-200 overflow-hidden">
       
-      {/* ── Background Matrix ── */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.015] pointer-events-none">
+      {/* ── Background Technical Grid ── */}
+      <svg className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none">
         <defs>
           <pattern id="footer-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00d4ff" strokeWidth="0.5" />
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0077B5" strokeWidth="1" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#footer-grid)" />
       </svg>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#00d4ff]/[0.015] rounded-full blur-[150px] pointer-events-none" />
+      
+      {/* Subtle Blue Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#0077B5]/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         
-        {/* ── Top Status Bar ── */}
-        <div className="flex items-center gap-4 mb-16 pb-6 border-b border-white/[0.05]">
-          <span className="font-mono text-[10px] text-[#00d4ff]/50 tracking-[0.2em] uppercase">
-            sys.terminate()
-          </span>
-          <div className="flex-1 h-px bg-white/[0.02]" />
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88] animate-pulse" />
-            <span className="font-mono text-[9px] text-[#00ff88]/60 tracking-widest uppercase">
-              All Systems Operational
-            </span>
+        {/* ── Environment Status Bar ── */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-16 pb-8 border-b border-slate-200">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shadow-lg">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-slate-900 tracking-tight">Abuzar Ali Portfolio</p>
+              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest font-bold">Release v3.0.2</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Environment: Production</span>
+            </div>
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#0077B5]" />
+              <span className="text-[10px] font-bold text-[#0077B5] uppercase tracking-widest">SSL Encrypted</span>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 mb-20">
           
-          {/* ── Brand Column ── */}
+          {/* ── Brand Summary ── */}
           <motion.div custom={0} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="lg:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 border border-white/[0.05] bg-white/[0.02] flex items-center justify-center">
-                <Terminal className="w-5 h-5 text-[#00d4ff]" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">AbuZar<span className="text-[#00d4ff]">.dev</span></h2>
-                <p className="font-mono text-[10px] text-white/40 tracking-widest uppercase mt-0.5">Full Stack Engineer</p>
-              </div>
-            </div>
-            
-            <p className="text-white/30 text-sm leading-relaxed max-w-sm">
-              Architecting scalable backend systems and engineering high-performance interfaces. Based in Lahore, PK. Available for global deployment.
+            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+              Engineering the <span className="text-[#0077B5]">Future.</span>
+            </h2>
+            <p className="text-slate-500 text-base leading-relaxed max-w-sm">
+              Focused on building robust, accessible, and high-performance web experiences. Currently exploring the intersection of Full Stack Engineering and AI Agents.
             </p>
             
-            <div className="space-y-3 pt-2">
-              {contactInfo.map((info, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <info.icon className="w-4 h-4 text-[#00d4ff]/50" />
-                  {info.href !== "#" ? (
-                    <a href={info.href} className="font-mono text-[11px] text-white/40 hover:text-white transition-colors tracking-wide">
-                      {info.text}
-                    </a>
-                  ) : (
-                    <span className="font-mono text-[11px] text-white/40 tracking-wide">{info.text}</span>
-                  )}
-                </div>
-              ))}
+            <div className="flex items-center gap-3 pt-4">
+              <a href={CONTACT_INFO.github} target="_blank" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-all shadow-sm">
+                <Github className="w-4 h-4" />
+              </a>
+              <a href={CONTACT_INFO.linkedin} target="_blank" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#0077B5] hover:border-[#0077B5] transition-all shadow-sm">
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a href={CONTACT_INFO.twitter} target="_blank" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#1DA1F2] hover:border-[#1DA1F2] transition-all shadow-sm">
+                <Twitter className="w-4 h-4" />
+              </a>
             </div>
           </motion.div>
 
-          {/* ── Links Columns ── */}
+          {/* ── Sitemaps ── */}
           <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
             {footerLinks.map((column, colIndex) => (
               <motion.div 
@@ -144,21 +134,19 @@ export default function Footer() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <h3 className="font-mono text-[11px] text-[#00d4ff]/70 uppercase tracking-widest mb-6 border-l-2 border-[#00d4ff]/30 pl-3">
+                <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-[0.2em] mb-6">
                   {column.title}
                 </h3>
                 <ul className="space-y-4">
-                  {column.links.map((link, linkIndex) => (
+                  {column.links.map((link) => (
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="group flex items-center gap-2 font-mono text-[11px] text-white/30 hover:text-white transition-colors tracking-wide uppercase"
+                        className="group flex items-center gap-2 text-sm text-slate-500 hover:text-[#0077B5] transition-colors font-medium"
                       >
-                        <span className="text-[#00d4ff]/0 group-hover:text-[#00d4ff]/60 transition-colors">{'>'}</span>
-                        {'icon' in link && link.icon ? <link.icon className="w-3.5 h-3.5 text-white/20 group-hover:text-[#00d4ff] transition-colors" /> : null}
-                        <span>{link.name}</span>
-                        {link.name === "Dev Blog" && (
-                          <span className="px-1.5 py-0.5 border border-[#00ff88]/20 bg-[#00ff88]/5 text-[#00ff88] text-[8px] ml-1">NEW</span>
+                        {link.name}
+                        {link.name.includes("Articles") && (
+                          <span className="px-1.5 py-0.5 rounded-md bg-blue-50 text-[#0077B5] text-[8px] font-bold uppercase tracking-widest">Soon</span>
                         )}
                       </Link>
                     </li>
@@ -169,52 +157,46 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ── Bottom Bar ── */}
+        {/* ── Bottom Compliance Bar ── */}
         <motion.div
           custom={4}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-white/[0.05]"
+          className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 border-t border-slate-200"
         >
-          {/* Copyright */}
-          <div className="flex items-center gap-3 font-mono text-[10px] text-white/20 tracking-widest uppercase">
-            <Copyright className="w-3.5 h-3.5" />
-            <span>{currentYear} AbuZar Ali.</span>
-            <span className="hidden sm:inline">|</span>
-            <span className="flex items-center gap-1.5">
-              Built with Next.js <ShieldCheck className="w-3 h-3 text-[#00d4ff]/50 mx-0.5" /> Django
-            </span>
+          <div className="flex flex-col md:flex-row items-center gap-4 text-slate-400 text-[11px] font-bold uppercase tracking-widest">
+            <div className="flex items-center gap-2">
+              <Copyright className="w-3.5 h-3.5" />
+              <span>{currentYear} Abuzar Ali</span>
+            </div>
+            <span className="hidden md:inline opacity-30">|</span>
+            <div className="flex items-center gap-2">
+              <span>Made with</span>
+              <Heart className="w-3.5 h-3.5 text-red-400 fill-red-400" />
+              <span>&</span>
+              <Coffee className="w-3.5 h-3.5 text-amber-500" />
+            </div>
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-3">
-            <a href="https://github.com/abuzar-ali1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center border border-white/[0.05] bg-white/[0.02] text-white/30 hover:text-[#00d4ff] hover:border-[#00d4ff]/30 transition-all">
-              <Github className="w-4 h-4" />
-            </a>
-            <a href="https://www.linkedin.com/in/abuzar-ali01/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center border border-white/[0.05] bg-white/[0.02] text-white/30 hover:text-[#00d4ff] hover:border-[#00d4ff]/30 transition-all">
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a href="https://x.com/Abu_zar_Ali" target="_blank" rel="noopener noreferrer" className="w-8 h-8 flex items-center justify-center border border-white/[0.05] bg-white/[0.02] text-white/30 hover:text-[#00d4ff] hover:border-[#00d4ff]/30 transition-all">
-              <Twitter className="w-4 h-4" />
-            </a>
-          </div>
+          <p className="text-[10px] font-mono text-slate-300 uppercase tracking-widest">
+            LATENCY: 24MS · SECURE_HANDSHAKE: OK
+          </p>
         </motion.div>
 
-        {/* ── Return to Root Button (Scroll Top) ── */}
+        {/* ── Scroll to Top (Light Professional Style) ── */}
         <AnimatePresence>
-          {scrollTop > 500 && (
+          {scrollTop > 600 && (
             <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
               onClick={scrollToTop}
-              className="fixed bottom-8 right-8 z-50 group flex items-center gap-2 px-4 py-2 border border-[#00d4ff]/30 bg-[#0a0a0a] text-[#00d4ff] hover:bg-[#00d4ff]/10 transition-all shadow-[0_0_15px_rgba(0,212,255,0.15)]"
-              aria-label="Return to top"
+              className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:bg-[#0077B5] hover:-translate-y-1 transition-all active:scale-95"
+              aria-label="Scroll to top"
             >
-              <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-              <span className="font-mono text-[10px] tracking-widest uppercase hidden sm:inline">sys.up()</span>
+              <ArrowUp className="w-5 h-5" />
             </motion.button>
           )}
         </AnimatePresence>
