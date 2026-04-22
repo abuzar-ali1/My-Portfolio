@@ -73,20 +73,7 @@ export default function AboutHero() {
           {/* ── LEFT COLUMN ── */}
           <div className="order-2 lg:order-1">
             
-            {/* Professional Status Tag */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-8"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[11px] font-medium text-slate-600 uppercase tracking-wider ">
-                Available for Internship • {CONTACT_INFO.location}
-              </span>
-            </motion.div>
+        
 
             {/* Name Heading */}
             <motion.div
@@ -95,7 +82,9 @@ export default function AboutHero() {
               transition={{ delay: 0.1 }}
               className="mb-4"
             >
-              <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-slate-900  leading-[1.1]">
+              <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.1]"
+              style={{"color" : "#030303"}}
+              >
                 {name}
                 <motion.span
                   animate={{ opacity: [1, 0] }}

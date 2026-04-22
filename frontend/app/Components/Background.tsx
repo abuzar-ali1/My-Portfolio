@@ -35,7 +35,7 @@ export default function Background() {
         </svg>
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         
         {/* ── Section Header ── */}
         <motion.div
@@ -50,9 +50,9 @@ export default function Background() {
               04 / development_history
             </span>
           </div>
-          <h2 className="text-4xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-6">
+          <h2 style={{"color" : '#030303'}} className="text-4xl sm:text-6xl font-bold tracking-tight leading-none mb-6">
             Education &
-            <span className="block text-slate-300">Recognition.</span>
+            <span className="block text-[#0077B5]">Recognition.</span>
           </h2>
           <p className="text-slate-500 max-w-lg text-lg leading-relaxed">
             A chronological view of my academic foundation and the milestones 

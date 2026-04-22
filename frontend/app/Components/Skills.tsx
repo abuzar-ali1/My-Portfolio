@@ -140,9 +140,9 @@ export default function Skills() {
             <div className="flex-1 h-px bg-slate-200" />
           </div>
 
-          <h2 className="text-4xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-6">
+          <h2 style={{"color" : '#030303'}} className="text-4xl sm:text-6xl font-bold tracking-tight leading-none mb-6">
             Core
-            <span className="block text-slate-300">Competencies.</span>
+            <span className="block text-[#0077B5]">Competencies.</span>
           </h2>
 
           {/* Professional Honest Alert */}

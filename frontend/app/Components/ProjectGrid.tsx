@@ -55,9 +55,9 @@ export default function ProjectGrid() {
                   02 / curated_work
                 </span>
               </div>
-              <h2 className="text-4xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none">
+              <h2 style={{"color" : '#030303'}} className="text-4xl sm:text-6xl font-bold tracking-tight leading-none">
                 Featured 
-                <span className="block text-slate-300">Engineering.</span>
+                <span className="block text-[#0077B5]">Engineering.</span>
               </h2>
             </div>
             <p className="text-slate-500 max-w-md text-lg leading-relaxed">

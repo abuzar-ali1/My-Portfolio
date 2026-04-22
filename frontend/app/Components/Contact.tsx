@@ -90,9 +90,9 @@ export default function Contact() {
             </span>
             <div className="flex-1 h-px bg-slate-200" />
           </div>
-          <h2 className="text-4xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none">
+          <h2 style={{"color" : '#030303'}} className="text-4xl sm:text-6xl font-bold  tracking-tight leading-none">
             Let&apos;s
-            <span className="block text-slate-300">Connect.</span>
+            <span className="block text-[#0077B5]">Connect.</span>
           </h2>
         </motion.div>
 
