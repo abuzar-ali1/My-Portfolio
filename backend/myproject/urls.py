@@ -23,7 +23,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/analyze-fit/', views.analyze_fit, name='analyze_fit'),
+    path('api/ask_portfolio/', views.ask_portfolio, name='ask_portfolio'),
     
 
 ]
