@@ -80,5 +80,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://abuzarali.dev",
     "https://www.abuzarali.dev",
-    "https://abuzar-ali.vercel.app/" 
+    "https://abuzar-ali.vercel.app" 
 ]
