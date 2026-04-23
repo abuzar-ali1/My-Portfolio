@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code, ArrowRight, FileText, Globe, Layers, Zap, Sparkles, Phone } from "lucide-react";
+import { Code, ArrowRight, FileText, Globe, Layers, Zap, Sparkles, Phone, MapPin, Code2, Terminal } from "lucide-react";
 import Image from "next/image";
 import profilePic from "./../../public/Images/my_profile.png";
 import { CONTACT_INFO, QUICK_STATS, roles } from "../Data/data";
@@ -173,34 +173,60 @@ export default function AboutHero() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="relative order-1 lg:order-2"
           >
-            {/* The Image Container */}
-            <div className="relative aspect-[4/5] w-full rounded-[2.5rem] overflow-hidden border-[8px] border-white shadow-2xl">
+           {/* The Premium Image Container */}
+          <div className="relative w-full max-w-md mx-auto aspect-[4/5] group font-sans">
+            
+            {/* Soft Ambient Glow Behind the Card */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#0077B5]/30 to-emerald-400/10 blur-3xl rounded-[3rem] group-hover:scale-105 transition-transform duration-700 -z-10" />
+
+            {/* Main Image Wrapper */}
+            <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border border-slate-200/50 bg-white shadow-2xl shadow-slate-200/50">
               <Image
                 src={profilePic}
                 alt="Abuzar Ali"
                 fill
-                className="object-cover transition-transform duration-700 hover:scale-105"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
                 priority
               />
-              
-              {/* Subtle Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
-              
-              {/* Floating Tech Badges */}
-              <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                <div className="bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-xl">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Stack Status</p>
-                  <div className="flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-blue-500" />
-                    <div className="w-2 h-2 rounded-full bg-slate-900" />
-                    <div className="w-2 h-2 rounded-full bg-[#0077B5]" />
+
+              {/* Elegant Bottom Dark Gradient (So white text pops) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/10 to-transparent opacity-90 transition-opacity duration-500" />
+
+              {/* Top-Right Status Pill */}
+              <div className="absolute top-6 right-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full shadow-lg flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-[10px] font-bold text-slate-700 uppercase tracking-widest">Available</span>
+              </div>
+
+              {/* Bottom Floating Frosted Glass Panel */}
+              <div className="absolute bottom-6 left-6 right-6 p-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl transition-all duration-300 group-hover:bg-white/20 group-hover:-translate-y-1">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-white font-bold text-lg leading-tight tracking-wide">
+                      Software Engineer
+                    </h3>
+                    <p className="text-white/70 text-[10px] font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1.5">
+                      <MapPin className="w-3 h-3" /> Lahore, PK
+                    </p>
+                  </div>
+                  
+                  {/* Subtle Tech Accents */}
+                  <div className="flex items-center gap-2 bg-slate-900/40 p-2 rounded-2xl backdrop-blur-sm border border-white/10">
+                    <div className="w-8 h-8 rounded-xl bg-[#0077B5] flex items-center justify-center shadow-inner">
+                      <Code2 className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-inner">
+                      <Terminal className="w-4 h-4 text-slate-900" />
+                    </div>
                   </div>
                 </div>
-                <div className="w-12 h-12 bg-[#0077B5] rounded-2xl flex items-center justify-center shadow-lg">
-                  <Globe className="w-6 h-6 text-white" />
-                </div>
               </div>
+              
             </div>
+          </div>
 
             {/* Background Decorative Rings */}
             <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-slate-100 rounded-full" />

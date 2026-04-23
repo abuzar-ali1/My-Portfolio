@@ -6,7 +6,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 
 export const metadata: Metadata = {
-  title: "Abuzar Ali | Frontend Developer",
+  title: "Abuzar Ali | Full Stack Developer",
   
   description: "Portfolio of Abuzar Ali. Specializing in building exceptional digital experiences with Next.js, React, and Tailwind CSS.",
   
