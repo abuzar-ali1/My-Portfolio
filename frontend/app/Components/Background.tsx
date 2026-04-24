@@ -128,9 +128,7 @@ export default function Background() {
                       </div>
                     </div>
 
-                    <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-2xl">
-                      {item.description}
-                    </p>
+                   
 
                     {/* Tags / Skills Row */}
                     {item.tags && (
@@ -143,23 +141,6 @@ export default function Background() {
                       </div>
                     )}
 
-                    {/* ── Special Feature: Degree Progress ── */}
-                    {isEdu && item.status?.includes("In Progress") && (
-                      <div className="mb-6 p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                        <div className="flex justify-between items-center mb-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                          <span>   Completion</span>
-                          <span className="text-slate-900">25%</span>
-                        </div>
-                        <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            whileInView={{ width: "25%" }}
-                            transition={{ duration: 1, ease: "easeOut" }}
-                            className="h-full bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)]"
-                          />
-                        </div>
-                      </div>
-                    )}
 
                     {/* ── Special Feature: Award Evidence Gallery ── */}
                     {isAward && item.images && (

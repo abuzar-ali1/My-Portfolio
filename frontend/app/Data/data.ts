@@ -104,11 +104,9 @@ export const TIMELINE = [
     images: [cert, award, chromebook],
   },
   {
-    year: "2025",
+    year: "2024",
     title: "BS Computer Science",
     institution: "Allama Iqbal Open University",
-    description:
-      "Currently pursuing (3rd Semester). Focus on Data Structures and Software Engineering.",
     type: "education",
     icon: GraduationCap,
     status: "In Progress (3.3 GPA)",
