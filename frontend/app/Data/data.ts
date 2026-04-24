@@ -109,7 +109,7 @@ export const TIMELINE = [
     institution: "Allama Iqbal Open University",
     type: "education",
     icon: GraduationCap,
-    status: "In Progress (3.3 GPA)",
+    status: "In Progress",
   },
   {
     year: "2024",
@@ -151,7 +151,7 @@ export const CONTACT_INFO = {
 export const NAV_LINKS = [
   { name: "About", href: "#about" },
   { name: "Work", href: "#projects" },
-  {name : "Ask Portfolio", href : "#ask_portfolio"},
+  {name : "Ask My AI", href : "#ask_portfolio"},
   { name: "Skills", href: "#skills" },
   { name: "Background", href: "#background" },
   { name: "Contact", href: "#contact" },

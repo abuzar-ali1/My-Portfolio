@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const SUGGESTIONS = [
   "Do you know Django?",
   "What is your strongest project?",
-  "Why should I hire you without a degree?",
+  "Why should I hire you?",
   "Can you work remotely?"
 ];
 
