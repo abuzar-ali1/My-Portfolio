@@ -13,6 +13,8 @@ import {
 import cert from "./../../public/Images/cert.jpeg";
 import award from "./../../public/Images/award.jpeg";
 import chromebook from "./../../public/Images/chromebook.jpeg";
+import { title } from "process";
+import { li } from "framer-motion/client";
 
 export const PROJECTS = [
   {
@@ -39,6 +41,16 @@ export const PROJECTS = [
   },
   {
     id: 2,
+    title : 'Resume Roaster | AI-Powered CV Feedback',
+    description : 'An AI-driven platform that analyzes resumes and provides actionable feedback to optimize them for applicant tracking systems (ATS) and human recruiters.',
+    tech : ['Next.js', 'Django', 'Python', 'Llama 3', 'Tailwind'],
+    github : 'https://github.com/abuzar-ali1/Resume-Roaster',
+    liveLink : 'https://resume-roaster-two.vercel.app/',
+    image : '/Images/resume_roaster.png',
+    icon : Sparkles,  
+  },
+  {
+    id: 3,
     title: "Modern eCommerce Store",
     description:
       "Full-featured shopping experience with Redux state management and dynamic product routing.",
@@ -49,7 +61,7 @@ export const PROJECTS = [
     icon: Layout,
   },
   {
-    id: 3,
+    id: 4,
     title: "Classroom Management Clone",
     description:
       "A CRUD-heavy application mimicking Google Classroom features with real-time persistence.",
@@ -60,7 +72,7 @@ export const PROJECTS = [
     icon: BookOpen,
   },
   {
-    id: 4,
+    id: 5,
     title: "Real-Time Weather Protocol",
     description:
       "Dynamic weather forecasting system using React Query for efficient data fetching and caching.",
