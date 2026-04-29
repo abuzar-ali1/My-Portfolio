@@ -176,21 +176,6 @@ export default function Footer() {
           </p>
         </motion.div>
 
-        {/* ── Scroll to Top (Light Professional Style) ── */}
-        <AnimatePresence>
-          {scrollTop > 600 && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              onClick={scrollToTop}
-              className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:bg-[#0077B5] hover:-translate-y-1 transition-all active:scale-95"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp className="w-5 h-5" />
-            </motion.button>
-          )}
-        </AnimatePresence>
 
       </div>
     </footer>

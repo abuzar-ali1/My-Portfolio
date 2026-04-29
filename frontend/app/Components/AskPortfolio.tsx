@@ -71,7 +71,7 @@ export default function AskPortfolio() {
         whileTap={{ scale: 0.95 }}
         className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 bg-[#0077B5] text-white p-3.5 rounded-full shadow-xl shadow-[#0077B5]/30 flex items-center justify-center group border-[3px] border-white"
       >
-        <Sparkles className="w-6 h-6 group-hover:animate-pulse" />
+        <Bot className="w-6 h-6 group-hover:animate-pulse" />
         <span className="absolute top-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
       </motion.button>
 
