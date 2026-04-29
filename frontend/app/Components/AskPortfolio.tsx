@@ -43,7 +43,7 @@ export default function AskPortfolio() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_API_URL}/api/ask-portfolio/`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DJANGO_API_URL}/api/ask_portfolio/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: query }),
