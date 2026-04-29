@@ -4,6 +4,7 @@ import ReactLenis from "lenis/react";
 import { Roboto } from 'next/font/google';
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import AskPortfolio from "./Components/AskPortfolio";
 
 export const metadata: Metadata = {
   title: "Abuzar Ali | Full Stack Developer",
@@ -39,6 +40,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <AskPortfolio />
         </ReactLenis>
       </body>
     </html>
